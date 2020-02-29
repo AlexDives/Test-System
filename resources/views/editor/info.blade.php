@@ -223,7 +223,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
@@ -239,70 +239,10 @@
     <script src="{{ asset('js/CustomJS/editorInfo.js') }}"></script>
 
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
-	<script src="{{ asset('js/sweetalert4.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.js') }}"></script>
     <script>
-        function loadUsers()
-        {
-            $.ajax({
-                url: '/info/editors',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: { tid:$("#tid").val() },
-                success: function (html) {
-                    popup(html);
-                }
-            });
-        }
-        function popup(data) {
-            Swal.fire({
-              title: 'Редакторы теста',				  
-              showCloseButton: false,  
-              html: data,
-              showCancelButton: false,
-              focusConfirm: true,			   
-            }).then((result) => {
-                var testJson = [];
-                var i = 0;
-                $('input[name="is_editor"]').each(function() {
-                    testJson[i] = {'id': $(this).attr('id'), 'status': $(this).prop('checked'), 'tid': $('#tid').val()};
-                    i++;
-                });
-                saveTestEditors(testJson);
-            })
-        }
-        function saveTestEditors(txt)
-        {
-            $.ajax({
-                url: '/info/saveTestEditors',
-                type: 'post',
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                dataType: "json",
-                data: { testEditors:txt },
-            });
-        }
-        function tableSearch() {
-            var phrase = document.getElementById('search-text');
-            var table = document.getElementById('info-table');
-            var regPhrase = new RegExp(phrase.value, 'i');
-            var flag = false;
-            for (var i = 1; i < table.rows.length; i++) {
-                flag = false;
-                for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
-                    flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
-                    if (flag) break;
-                }
-                if (flag) {
-                    table.rows[i].style.display = "";
-                } else {
-                    table.rows[i].style.display = "none";
-                }
-
-            }
-        }
+        
     </script>
 @endsection
 
@@ -311,6 +251,7 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('fonts/fonts/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
     <style>
         .scrollDiv{
             height: 200px !important;

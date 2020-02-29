@@ -11,11 +11,11 @@ class statisticController extends Controller
     public function main(Request $request)
     {
         $tests = DB::table('tests')->where('tests.id', $request->id)
-                ->leftJoin('target_audience', 'target_audience.id', '=', 'tests.targetAudience_id')
+                ->leftJoin('target_Audience', 'target_Audience.id', '=', 'tests.targetAudience_id')
                 ->leftJoin('type_test', 'type_test.id', '=', 'tests.type_id')
                 ->select(
                     'tests.*',
-                    'target_audience.name as targetAudienceName',
+                    'target_Audience.name as targetAudienceName',
                     'type_test.name as typeTestName'
                 )->first();
         $testName = $tests->discipline.' | '.$tests->typeTestName.' | '.$tests->targetAudienceName;

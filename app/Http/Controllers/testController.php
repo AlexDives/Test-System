@@ -38,7 +38,7 @@ class testController extends Controller
                     [
                         'start_time'    => $start_time,
                         'timeLeft'      => $timeLeft,
-                        'minuts_spent'  => 0,
+                        'minuts_spent' => 0,
                         'last_active'   => date("Y-m-d H:i:s", time()),
                         'status'        => 1
                     ]

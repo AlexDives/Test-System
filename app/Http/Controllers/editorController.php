@@ -342,8 +342,9 @@ class editorController extends Controller
             ->first();
         $test_name = $tests->discipline . ' | ' . $tests->typeTestName . ' | ' . $tests->targetAudienceName;
         return view('editor.questions', [
-            'test_id' => $request->id,
-            'test_name' => $test_name
+            'test_id'   => $request->id,
+            'test_name' => $test_name,
+            'role_id'   => session('role_id')
         ]);
     }
 
@@ -498,7 +499,9 @@ class editorController extends Controller
                 if ($userTest != null && $te['status'] == "false")  DB::table("test_editors")->where("id", $userTest->id)->delete(); 
                 else if ($userTest == null && $te['status'] == "true")  DB::table("test_editors")->insert(['test_id' => $te['tid'], 'user_id' => $te['id'], 'is_owner' => 'F']); 
             }
+            return 0;
         }
+        else return -1;
     }
 
     public function speedFillQuest(Request $request)

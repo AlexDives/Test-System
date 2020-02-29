@@ -44,18 +44,17 @@
 				if (role_id > 0) {
 					if(role_id == 1 || role_id == 2)
 					{
-
 						location.replace("/editor");
 					}
 					else if (role_id == 3) 
 					{
-						location.replace("/pers/list");
+						location.replace("/testing");
 					}
 					else if (role_id == 4) 
 					{
 						location.replace("/editor");
 					}
-					else if (role_id == 5) alert('Ты тип авторизирован!'); 
+					else if (role_id == 5) alert('Ты тип авторизирован!');
 				}
 			}
 			function onkeyup_check(e) { if (e.which == 13) auth_check(); }
@@ -76,12 +75,10 @@
 							<input type="text" name="login" id="login" placeholder="Логин" value="" readonly onfocus="this.removeAttribute('readonly')" required/>
 							<input type="password" name="pwd" id="pwd" placeholder="Пароль" value="" onfocus="this.removeAttribute('readonly')" onkeyup="onkeyup_check(event)" required/>
 							<input type="button" name="ButtonFormAuth" value="Войти" class="ButtonFormAuth" id="ButtonFormAuth" onClick="auth_check()"/>
-							
 						</form>
 						<div class="error-message" name="error-message" id="error-message"></div>
 						<hr>
 						<a href="/registration" style="color: black;">Регистрация</a>
-						
 					</div>
 				</figure>
 				<figure class="auth-block-back">

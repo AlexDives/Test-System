@@ -1,10 +1,10 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var max_fields = 5;
     var wrapper = $(".container1");
     var add_button = $(".add_form_field");
 
     var x = 1;
-    $(add_button).click(function (e) {
+    $(add_button).click(function(e) {
         e.preventDefault();
 
         if (x <= 0) { x = 1; }
@@ -20,17 +20,19 @@ $(document).ready(function () {
                 '@endforeach ' +
                 '</select>' +
                 '</div>');
-        }
-        else {
+        } else {
             alert('Добавлять больше нельзя!')
         }
     });
 
-    $(wrapper).on("click", ".delete", function (e) {
-        e.preventDefault(); $(this).parent('div').remove(); x--;
+    $(wrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
     })
 
 });
+
 function saveTestInfo(tid) {
     if ($.trim($('#discipline').val()) != '' &&
         $.trim($('#typeTest').val()) != '' &&
@@ -47,13 +49,115 @@ function saveTestInfo(tid) {
             headers: {
                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (data) {
-                if (data == -1) alert('Произошла ошибка при сохранении! Обратитесь к администратору.');
-                else document.location.href = "/info?id=" + data;
+            success: function(data) {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                if (data == -1) Command: toastr["error"]('Произошла ошибка при сохранении! Обратитесь к администратору.');
+                else Command: toastr["success"]("Сохранено");
             },
-            error: function (msg) {
+            error: function(msg) {
                 alert('Ошибка');
             }
         });
     } else alert('Заполните все поля!');
+}
+
+function loadUsers() {
+    $.ajax({
+        url: '/info/editors',
+        type: 'POST',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: { tid: $("#tid").val() },
+        success: function(html) {
+            popup(html);
+        }
+    });
+}
+
+function popup(data) {
+    Swal.fire({
+        title: 'Редакторы теста',
+        showCloseButton: false,
+        html: data,
+        showCancelButton: false,
+        focusConfirm: true,
+    }).then((result) => {
+        var testJson = [];
+        var i = 0;
+        $('input[name="is_editor"]').each(function() {
+            testJson[i] = { 'id': $(this).attr('id'), 'status': $(this).prop('checked'), 'tid': $('#tid').val() };
+            i++;
+        });
+        saveTestEditors(testJson);
+    })
+}
+
+function saveTestEditors(txt) {
+    $.ajax({
+        url: '/info/saveTestEditors',
+        type: 'post',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        dataType: "json",
+        data: { testEditors: txt },
+        success: function(data) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (data == -1) Command: toastr["error"]('Произошла ошибка при сохранении! Обратитесь к администратору.');
+            else Command: toastr["success"]("Сохранено");
+        },
+    });
+}
+
+function tableSearch() {
+    var phrase = document.getElementById('search-text');
+    var table = document.getElementById('info-table');
+    var regPhrase = new RegExp(phrase.value, 'i');
+    var flag = false;
+    for (var i = 1; i < table.rows.length; i++) {
+        flag = false;
+        for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
+            flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+            if (flag) break;
+        }
+        if (flag) {
+            table.rows[i].style.display = "";
+        } else {
+            table.rows[i].style.display = "none";
+        }
+
+    }
 }

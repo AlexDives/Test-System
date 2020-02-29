@@ -1,23 +1,9 @@
-/*var table = Quill.import('modules/table');
-Quill.register(table, true);*/
-/*import QuillBetterTable from 'quill-better-table'
-
-Quill.register({
-    'modules/better-table': QuillBetterTable
-}, true)*/
-
 var toolbarOptions = [
-    ['bold', 'italic', 'underline'], // toggled buttons
-
+    ['bold', 'italic', 'underline'],
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
-    [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
-
+    [{ 'script': 'sub' }, { 'script': 'super' }],
     [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
-    /*[{ 'header': [1, 2, 3, 4, 5, 6, false] }],*/
-
-    /*[{ 'color': [] }, { 'background': [] }],    */ // dropdown with defaults from theme
-    /*[{ 'font': [] }],*/
     ['table'],
     ['image'],
     ['clean'] // remove formatting  button
@@ -42,7 +28,24 @@ function ajaxQuestList(test_id) {
         },
         data: { tid: test_id },
         success: function(data) {
-            if (data == -1) alert('Произошла ошибка при загрузке списка вопросов, повторите попытку!');
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (data == -1) Command: toastr["error"]('Произошла ошибка при загрузке списка вопросов, повторите попытку!');
             else {
                 loadQuestList(data);
             }
@@ -63,10 +66,6 @@ function loadQuestList(data) {
         if (currentQuestion != 0) {
             document.querySelector('.li').children[0].classList.add('active');
             $('.s-ask').filter('.active').children(".item").click();
-
-            /*$('.li').animate({
-                scrollLeft: '+=100'
-            }, 300, 'swing');*/
         } else if (currentQuestion == 0) newQuest();
     } else {
         alert('Максимальное количество ворпосов в тесте 60!');
@@ -118,8 +117,6 @@ function findRow(node) {
     return i;
 }
 
-// var count = findRow(document.getElementById('activeQuest'));
-
 var firstClick = true;
 
 function selectedQuest(qid, obj) {
@@ -143,7 +140,24 @@ function selectedQuest(qid, obj) {
             },
             data: { id: qid },
             success: function(data) {
-                if (data == -1) alert('Произошла ошибка при загрузке списка вопросов, повторите попытку!');
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                if (data == -1) Command: toastr["error"]('Произошла ошибка при загрузке списка вопросов, повторите попытку!');
                 else {
                     data.forEach(element => {
                         switch (element['type']) {
@@ -197,13 +211,29 @@ function saveQuest() {
             },
             data: $('#questionForm').serialize(),
             success: function(data) {
-                if (data == -1) alert('Произошла ошибка при сохранении данного вопроса, повторите попытку!');
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                if (data == -1) Command: toastr["error"]('Произошла ошибка при сохранении данного вопроса, повторите попытку!');
                 else {
                     $('#idQuest').val(data);
                     ballMass[data] = $('#ballQuest').val();
                     $('.s-ask').filter('.active').children(".item").attr('onclick', "selectedQuest(" + data + ", this);");
-                    $("#okImg").fadeIn(500);
-                    $("#okImg").delay(500).fadeOut(500);
+                    Command: toastr["success"]("Сохранено");
                 }
             },
             error: function(msg) {
@@ -223,7 +253,24 @@ function deleteQuest() {
         },
         data: { id: qid },
         success: function(data) {
-            if (data == -1) alert('Произошла ошибка при удалении вопроса, повторите попытку!');
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (data == -1) Command: toastr["error"]('Произошла ошибка при удалении вопроса, повторите попытку!');
             else {
 
                 ballMass[qid] = null;
@@ -244,7 +291,45 @@ function deleteQuest() {
                         wrapObj.children[i].children[0].innerHTML = i + 1;
                     }
                 }
-                //$('.s-ask').children(".item").val(0);
+                Command: toastr["info"]('Вопрос удален!');
+            }
+        },
+        error: function(msg) {
+            alert('Ошибка');
+        }
+    });
+}
+
+function speedFillQuest() {
+    $.ajax({
+        url: '/questions/speedFillQuest',
+        type: 'POST',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: $('#questionForm').serialize(),
+        success: function(data) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (data == -1) Command: toastr["error"]('Произошла ошибка при сохранении данного вопроса, повторите попытку!');
+            else {
+                ajaxQuestList($('#tid').val());
+                Command: toastr["success"]("Быстрое заполнение выполнено!");
             }
         },
         error: function(msg) {

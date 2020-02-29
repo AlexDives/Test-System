@@ -86,11 +86,6 @@
                                                 <h1>PIN {{ $person->PIN }}</h1>
                                             </div>
                                         </div>
-                                        <!--<div class='col-md-6'>
-                                            <div style='text-align: center;width:100%;height:100%;padding-top:50px; border: 1px solid black;'>
-                                                <h1>ИНФО БЛОК</h1>
-                                            </div>
-                                        </div>-->
                                     </div>
                                 </div>			 				 
                             </div>
@@ -110,7 +105,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
@@ -126,9 +121,6 @@
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
     <script>
-        /*setInterval(() => {
-            window.location.reload();
-        }, 300000); // каждые 5 мин обновить страницу*/
         var testPersId = 0;
         var gStatus = 0
         function checkedRow(obj, status){

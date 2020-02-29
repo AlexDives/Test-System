@@ -39,7 +39,7 @@ class authController extends Controller
         }
         else 
         {
-            $persons = DB::table('persons')->where(['login' => $login])->first();
+            $persons = DB::table('persons')->where(['login' => $login])->whereNull('secret_string')->first();
             if ($persons != null)
             {
                 if (Hash::check($pass, $persons->password)) {

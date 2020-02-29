@@ -36,6 +36,7 @@ Route::get('/registration', 'Ajax\regTestsController@index');
 Route::post('/registration/post', 'Ajax\regTestsController@registration');
 Route::post('/Check_login', 'Ajax\regTestsController@check_login');
 Route::post('/Check_email', 'Ajax\regTestsController@check_email');
+Route::get('/verificate', 'Ajax\regTestsController@verificate');
 
 Route::get('/pers/list', 'persController@persList')->middleware('authCheck');
 Route::post('/pers/check', 'persController@persCheck')->middleware('authCheck');

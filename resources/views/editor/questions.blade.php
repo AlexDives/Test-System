@@ -39,10 +39,11 @@
                                     <a href="#" class="side-menu__item" onclick="saveQuest();"><i class="side-menu__icon  fa fa-floppy-o"></i><span class="side-menu__label">Сохранить <img id="okImg" src="{{ asset('images/sources/ok.png') }}" style="height: 20px;padding-left: 15px;display:none;"></span></a>
                                 </li>
                                 
-                                <li class="slide">
-                                    <a href="#" class="side-menu__item" onclick="speedFillQuest();"><i class="side-menu__icon  fa fa-floppy-o"></i><span class="side-menu__label">Быстро заполнить <img id="okImg" src="{{ asset('images/sources/ok.png') }}" style="height: 20px;padding-left: 15px;display:none;"></span></a>
-                                </li>
-
+                                @if($role_id == 1)
+                                    <li class="slide">
+                                        <a href="#" class="side-menu__item" onclick="speedFillQuest();"><i class="side-menu__icon  fa fa-floppy-o"></i><span class="side-menu__label">Быстро заполнить <img id="okImg" src="{{ asset('images/sources/ok.png') }}" style="height: 20px;padding-left: 15px;display:none;"></span></a>
+                                    </li>
+                                @endif
                                 <li class="slide">
                                     <a href="#" class="side-menu__item" onclick="deleteQuest();"><i class="side-menu__icon  fa fa-minus"></i><span class="side-menu__label">Удалить вопрос</span></a>
                                 </li>							 
@@ -147,7 +148,7 @@
         <div class="container">
             <div class="row align-items-center flex-row-reverse">
                 <div class="col-lg-12 col-sm-12   text-center">
-                    © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                    © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                 </div>
             </div>
         </div>
@@ -161,37 +162,12 @@
     <script src="{{ asset('js/accordion.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/quill2.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/toastr.js') }}"></script>
 @endsection
 
 @section('includeBeforeScripts')
     <script src="{{ asset('js/CustomJS/editorQuestions.js') }}"></script>
     <script>ajaxQuestList({{ $test_id }});</script>
-    <script>
-        function speedFillQuest()
-        {
-            $.ajax({
-                url: '/questions/speedFillQuest',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: $('#questionForm').serialize(),
-                success: function(data) {
-                    if (data == -1) alert('Произошла ошибка при сохранении данного вопроса, повторите попытку!');
-                    else {
-                        ajaxQuestList($('#tid').val());
-                        $("#okImg").fadeIn(500);
-                        $("#okImg").delay(500).fadeOut(500);
-                    }
-                },
-                error: function(msg) {
-                    alert('Ошибка');
-                }
-            });
-        }
-    
-    </script>
-
 @endsection
 
 @section('includeStyles')
@@ -203,6 +179,7 @@
 
     <link href="{{ asset('css/quill.snow.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/quill-better-table.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
 	<style>
 		.question {
 			padding: 10px;

@@ -76,7 +76,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
