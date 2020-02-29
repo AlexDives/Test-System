@@ -42,6 +42,8 @@ Route::get('/pers/list', 'persController@persList')->middleware('authCheck');
 Route::post('/pers/check', 'persController@persCheck')->middleware('authCheck');
 Route::get('/pers/cabinet', 'persController@persCabinet')->middleware('authCheck');
 
+Route::get('/persons/trialTesting', 'trialTestingController@index');
+
 Route::get('/test/start', 'testController@start')->middleware('authCheck');
 Route::post('/test/loadQuestList', 'testController@loadQuestList')->middleware('authCheck');
 Route::post('/test/selectedQuest', 'testController@selectedQuest')->middleware('authCheck');
