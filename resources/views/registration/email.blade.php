@@ -59,7 +59,7 @@ a[x-apple-data-detectors] {
 		<![endif]--> 
    <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;"> 
      <tr style="border-collapse:collapse;"> 
-      <td valign="top" style="padding:50px;Margin:0;"> 
+      <td valign="top" style="padding:5%;Margin:0;"> 
        <table cellpadding="0" cellspacing="0" class="es-header" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;"> 
          <tr style="border-collapse:collapse;"> 
           <td align="center" style="padding:0;Margin:0;"> 
@@ -105,7 +105,7 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;"><span style="font-size:16px;line-height:24px;">Здравствуйте, {{ $fio }},</span></p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="left" bgcolor="transparent" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;">Вы регистрировали аккаунт на сайте test.ltsu.org. <br>Для дальнейшего использования аккаунта, Вам необходимо пройти верификацию E-mail адреса, для этого нажмите кнопку "Верифицировать E-mail".<br>Пройти верификацию можно в течении 1 дня с момента регистрации</p></td> 
+                      <td align="left" bgcolor="transparent" style="padding:0;Margin:0;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;">Вы регистрировали аккаунт на сайте test.ltsu.org. <br>Для дальнейшего использования аккаунта, Вам необходимо пройти верификацию E-mail адреса, для этого нажмите кнопку "Верифицировать E-mail".<br>Пройти верификацию можно в течении 1 дня с момента регистрации.</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td align="center" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px;"><span class="es-button-border" style="border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto;"><a href="{{ $link }}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;color:#4A7EB0;border-style:solid;border-color:#EFEFEF;border-width:10px 25px;display:inline-block;background:#EFEFEF;border-radius:0px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;">Верифицировать E-mail</a></span></td> 
