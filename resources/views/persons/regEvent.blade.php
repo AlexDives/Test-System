@@ -7,7 +7,7 @@
 			    <a class="header-brand" href="/" style="width:100%;text-align:center">
 					<img src="{{ asset('images/logo.png') }}" class="header-brand-img main-logo" alt="Hogo logo">
 					<img src="{{ asset('images/logo.png') }}" class="header-brand-img icon-logo" alt="Hogo logo">
-					<span class='logo-name'>Регистрация на пробное тестирование</span>
+					<span class='logo-name'>Регистрация на {{ $event_name }}</span>
 				</a>
 				<div class="d-flex order-lg-2 ml-auto header-rightmenu"></div>
 			</div>
@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <form action='' method='POST' name="regtrial" id="regTrial">
+                    <form action='/persons/submitRegEvent' method='POST' name="regEvent" id="regEvent">
                         {{ csrf_field() }}
                         <div class="card">
                             <div class="card-body">
@@ -31,19 +31,19 @@
                                         <div class='row mb-3'>
                                             <div class='col-md-4 mb-2'>
 												<label class="form-label">Фамилия</label>
-												<input type="text" class="form-control" name="famil" id="famil" placeholder="" >
+												<input type="text" class="form-control" name="famil" id="famil" placeholder="" value="{{ $famil }}" readonly>
 											</div> 
 											<div class='col-md-4 mb-2'>
 												<label class="form-label">Имя</label>
-												<input type="text" class="form-control" name="name" id="name" placeholder="" >
+												<input type="text" class="form-control" name="name" id="name" placeholder="" value="{{ $name }}" readonly>
 											</div> 
 											<div class='col-md-4 mb-2'>
 												<label class="form-label">Отчество</label>
-												<input type="text" class="form-control" name="otch" id="otch" placeholder="" >
+												<input type="text" class="form-control" name="otch" id="otch" placeholder="" value="{{ $otch }}" readonly>
 											</div>
                                             <div class='col-md-12 mt-2'>
                                                 <label class="form-label">Место учебы</label>
-                                                <input type="text" class="form-control" name="example-text-input-valid" placeholder="">
+                                                <input type="text" class="form-control" name="study_place" placeholder="">
                                             </div> 													
                                         </div>												 
                                     </div>	
@@ -51,12 +51,12 @@
                                         <div class='row m-5'>
                                             <div class='col-md-12'>
                                                 <div class="custom-controls-stacked custom-center">
-                                                    <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="example-radios" value="option1" checked="">
+                                                    <label class="custom-control custom-radio" onclick="checkedRadio();">
+                                                        <input type="radio" class="custom-control-input" name="target_audience" id="target_audience" value="1" checked="">
                                                         <span class="custom-control-label">на базе 11 классов</span>
                                                     </label>
-                                                    <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="example-radios" value="option2">
+                                                    <label class="custom-control custom-radio" onclick="checkedRadio();">
+                                                        <input type="radio" class="custom-control-input" name="target_audience" id="target_audience" value="2">
                                                         <span class="custom-control-label">на базе СПО</span>
                                                     </label> 
                                                 </div>	
@@ -70,32 +70,43 @@
                                     </div>
                                     <div class='col-md-12 text-danger'>
                                         <h6>
-                                            
-                                                <p><b>Уважаемые абитуриенты!<br>
-                                                При выборе времени для прохождения тестирования учитывайте, что на прохождение первого теста отводится один час.
-                                                Поэтому рекомендуем Вам выбирать последовательно. (Например, время прохождения первого теста Вы выбрали на 9.00.<br>
-                                                Соответственно время для второго теста рекомендуем выбрать на 10.00 )</b></p>
-                                            
+                                            <p><b>Уважаемые абитуриенты!<br>
+                                            При выборе времени для прохождения тестирования учитывайте, что на прохождение первого теста отводится один час.
+                                            Поэтому рекомендуем Вам выбирать последовательно. (Например, время прохождения первого теста Вы выбрали на 9.00.<br>
+                                            Соответственно время для второго теста рекомендуем выбрать на 10.00 )</b></p>
                                         </h6>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-6"> 
-                                        <div class='row mb-3'>
+                                        <div class='row mb-3' id="testsBac">
                                             <div class='col-md-12 mb-2'>
                                                 <label class="form-label">1-й тест</label>
-                                                <select class='form-control'>
-                                                    <option>1-й предмет</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
+                                                <select onchange="changeTest();" class='form-control tests' name="first_tests" id="first_tests">
+                                                    <option value="-1">Выберите тест</option>
+                                                    @foreach ($testsBac as $test)
+                                                        <option value="{{$test->id}}" id="ft{{$test->id}}">{{$test->discipline}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div> 
                                             <div class='col-md-12 mb-2'>
                                                 <label class="form-label">2-й тест</label>
-                                                <select class='form-control'>
-                                                    <option>2-й предмет</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
+                                                <select  class='form-control tests' name="second_tests" id="second_tests" disabled>
+                                                    <option value="-1">Выберите тест</option>
+                                                    @foreach ($testsBac as $test)
+                                                        <option value="{{$test->id}}" id="st{{$test->id}}">{{$test->discipline}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>  
+                                        </div>												 
+                                        <div class='row mb-3' id="testsMC">
+                                            <div class='col-md-12 mb-2'>
+                                                <label class="form-label">Тест</label>
+                                                <select class='form-control tests' name="first_testsMC" id="first_testsMC" disabled>
+                                                    <option value="-1">Выберите тест</option>
+                                                    @foreach ($testsMC as $test)
+                                                        <option value="{{$test->id}}" id="{{$test->id}}">{{$test->discipline}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>  
                                         </div>												 
@@ -104,18 +115,20 @@
                                         <div class='row mb-3'>
                                             <div class='col-md-12 mb-2'>
                                                 <label class="form-label">Время</label>
-                                                <select class='form-control'>
+                                                <select class='form-control times' name="first_time" id="first_time">
                                                     <option>Время начала тестирования</option>
-                                                    <option>9:00</option>
-                                                    <option>10:00</option>
+                                                    @for ($i = 0; $i < count($freeTime); $i++)
+                                                        <option value="{{ $freeTime[$i]['full'] }}" id="{{ $freeTime[$i]['full'] }}">{{ $freeTime[$i]['short'] }}</option>
+                                                    @endfor
                                                 </select>
                                             </div> 
-                                            <div class='col-md-12 mb-2'>
+                                            <div class='col-md-12 mb-2' id="timeBac">
                                                 <label class="form-label">Время</label>
-                                                <select class='form-control'>
+                                                <select class='form-control times' name="second_time" id="second_time" readonly>
                                                     <option>Время начала тестирования</option>
-                                                    <option>9:00</option>
-                                                    <option>10:00</option>
+                                                    @for ($i = 0; $i < count($freeTime); $i++)
+                                                        <option value="{{ $freeTime[$i]['full'] }}" id="{{ $freeTime[$i]['full'] }}">{{ $freeTime[$i]['short'] }}</option>
+                                                    @endfor
                                                 </select>
                                             </div>  
                                         </div>												 
@@ -126,7 +139,7 @@
                                             <div class='col-md-5'>
                                                 <div class="custom-controls-stacked custom-center">
                                                     <label class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1">
+                                                        <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="T">
                                                         <span class="custom-control-label">Требуется общежитие</span>
                                                     </label>
                                                 </div>
@@ -163,6 +176,28 @@
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
     <script>
+        function changeTest()
+        {
+            var id = $('#first_tests').val();
+            $('#second_tests').prop('disabled', false);
+            $('#second_tests').val('-1');
+            $('.tests option').show();
+            $('#st'+id).hide();
+        }
+        function checkedRadio()
+        {
+            if ($('input[name=target_audience]:checked').val() == 1) {
+                $('#testsBac').show();
+                $('#timeBac').show();
+                $('#testsMC').hide();
+            }
+            else {
+                $('#testsMC').show();
+                $('#testsBac').hide();
+                $('#timeBac').hide();
+            }
+        }
+
         function reg() {
             Swal.fire({
               title: '',				  
@@ -195,7 +230,7 @@
 @endsection
 
 @section('includeStyles')
-    <title>Личный кабинет</title>
+    <title>Регистрация на {{ $event_name }}</title>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('fonts/fonts/font-awesome.min.css') }}" rel="stylesheet">	
@@ -208,6 +243,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        #testsMC {
+            display: none;
         }
     </style>
 @endsection

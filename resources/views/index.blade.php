@@ -54,7 +54,10 @@
 					{
 						location.replace("/editor");
 					}
-					else if (role_id == 5) alert('Ты тип авторизирован!');
+					else if (role_id == 5) 
+					{
+						location.replace("/persons");
+					}
 				}
 			}
 			function onkeyup_check(e) { if (e.which == 13) auth_check(); }

@@ -33,7 +33,7 @@
 									</div> 
 									<div class='col-md-4 mb-2'>
 										<label class="form-label">Пароль</label>
-										<input type="password" class="form-control" name="pass" id="pass" placeholder="" onkeyup="checkPass()">
+										<input type="password" class="form-control" name="pass" id="pass" placeholder="">
 									</div> 
 									<div class='col-md-4 mb-2'>
 										<label class="form-label">Повторить пароль</label>
