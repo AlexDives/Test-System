@@ -13,3 +13,6 @@ composer require "barryvdh/laravel-dompdf": "0.5.*"
 composer require "barryvdh/laravel-dompdf": "0.5"
 composer update
 exit
+composer update
+php artisan cache:clear
+exit

@@ -3,7 +3,15 @@
 
 <ul class="open-list accordionjs m-0" data-active-index="false">
     @foreach ($persEvents as $pe)
-        <li class="acc_section" onclick="$('#slideEdit').css('display', '');">
+        <li class="acc_section" onclick="
+                                        peid = {{$pe->id}};
+                                        $('#slideEdit').css('display', '');
+                                        $('#event_name').html('{{ $pe->name }}');
+                                        $('#event_name2').html('{{ $pe->name }}');
+                                        $('#event_name3').html('{{ $pe->name }}');
+                                        $('#event_date').html('{{ date('d.m.Y', strtotime($pe->date_start))}}');
+                                        $('.exam_list').show();
+                                    ">
             <div class="acc_head">
                 <h3>														
                     <div class='row'>

@@ -46,6 +46,7 @@ Route::get('/persons', 'personsCabinetController@index');
 Route::get('/persons/events', 'personsCabinetController@events');
 Route::post('/persons/regevent', 'personsCabinetController@regevent');
 Route::post('/persons/savevent', 'personsCabinetController@savevent');
+Route::post('/persons/createPdf', 'personsCabinetController@createPdf');
 
 Route::get('/test/start', 'testController@start')->middleware('authCheck');
 Route::post('/test/loadQuestList', 'testController@loadQuestList')->middleware('authCheck');

@@ -255,8 +255,8 @@
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        console.log(data);
-                        popup(data);
+                        if (data == -1) location.replace("/persons");
+                        else popup(data);
                     },
                     error: function(msg) {
                         alert('Error, try again');
@@ -270,13 +270,34 @@
         }
         function createPdf(peid, status)
         {
-            if (status == 0)
-            {
-                // open
+            if (status == 0) {
+                let form = document.createElement('form');
+                form.action = '/persons/createPdf';
+                form.method = 'POST';
+                form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
+                // перед отправкой формы, её нужно вставить в документ
+                document.body.append(form);
+                form.submit();
             }
             else if (status == 1)
             {
-                // downloaded
+                $.ajax({
+                    url: '/persons/createPdf',
+                    type: 'POST',
+                    data: {
+                        peid : peid,
+                        status : status
+                    },
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        popup(data);
+                    },
+                    error: function(msg) {
+                        alert('Error, try again');
+                    }
+                });
             }
         }
         function popup(data) {
@@ -285,18 +306,18 @@
               showCloseButton: false,  
               html:
                 '<div class="row">'+
-                    '<div class="col-md-12 mb-2"><b>Вы успешно зарегистрировались на ПРОБНОЕ ТЕСТИРОВАНИЕ:</b></div>'+
-                    '<div class="col-md-12 mb-2" style="font-size:14px"><b>Для участия в пробном тестировании Вам потребуется:</b></div>'+
+                    '<div class="col-md-12 mb-2"><b>Вы успешно зарегистрировались на {{ $event_name }}:</b></div>'+
+                    '<div class="col-md-12 mb-2" style="font-size:14px"><b>Для участия Вам потребуется:</b></div>'+
                 '</div>'+
                 '<div class="row">'+				    	
                     '<div class="col-md-12 mb-2" style="text-align: justify; line-height: 16px; font-size: 13px;"><ol>'+
                     '<li><b>Скачать и распечатать</b> "Экзаменационный лист", в котором указаны Ваши данные и <b>персональный PIN</b>. Без "Экзаменационного листа" Вас <b>не допустят к тестированию.</b></li>'+
-                    '<li class="mt-2"><b>Прийти</b> для подтверждения регистрации на пробное тестирование, которое будет проходить <b>26.06.2020</b>, по адресу г. Луганск,  ул. Оборонная 2: учебный корпус №2 , 2-й этаж, каб. 270</li>'+
+                    '<li class="mt-2"><b>Прийти</b> для подтверждения регистрации на {{ $event_name }}, которое будет проходить <b>{{ $event_date }}</b>, по адресу г. Луганск,  ул. Оборонная 2: учебный корпус №2 , 2-й этаж, каб. 270</li>'+
                     '<li class="mt-2">Провести хорошо время</li></ol></div>'+ 
                 '</div>'+
                 '<div class="row">'+
-                '<div class="col-md-4"><button class="btn btn-primary" onclicn="createPdf(' + data + ', 0);">Открыть</button></div>'+
-                '<div class="col-md-4"><button class="btn btn-primary" onclicn="createPdf(' + data + ', 1);">Скачать</button></div>'+
+                '<div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(' + data + ', 0);">Открыть</button></div>'+
+                '<div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(' + data + ', 1);">Скачать</button></div>'+
                 '<div class="col-md-4"><button class="btn btn-primary" onclick="Swal.close()">Отмена</button></div>'+
                 '</div>'+
                 '</div>',
