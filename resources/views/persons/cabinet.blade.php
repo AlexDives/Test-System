@@ -142,7 +142,6 @@
             let form = document.createElement('form');
             form.action = '/persons/regevent';
             form.method = 'POST';
-            alert(data);
             form.innerHTML = '<input name="eid" value="' + data + '">{{ csrf_field() }}';
 
             // перед отправкой формы, её нужно вставить в документ
@@ -167,7 +166,7 @@
                 showCancelButton: false,
                 focusConfirm: false,
             }).then((result) => {
-                aler('тык');
+                
             })
         }
     </script>

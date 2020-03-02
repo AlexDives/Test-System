@@ -129,6 +129,7 @@ class personsCabinetController extends Controller
                 'famil'         => $pers->famil,
                 'name'          => $pers->name,
                 'otch'          => $pers->otch,
+                'place_study'   => $pers->study_place,
                 'event_name'    => $event->name,
                 'testsBac'      => $testsBac,
                 'testsMC'       => $testsMC,
@@ -136,5 +137,68 @@ class personsCabinetController extends Controller
                 'eid'           => $event->id
             ]
         );
+    }
+
+    public function savevent(Request $request)
+    {
+        $eid            = $request->eid;
+        $place_study    = $request->place_study;
+        $who            = $request->who;
+        $first_test     = $request->first_test;
+        $first_time     = $request->first_time;
+        $second_test    = $request->second_test;
+        $second_time    = $request->second_time;
+        $is_hostel      = $request->is_hostel = 'T' ? 'T' : 'F';
+        $first_testMC   = $request->first_testMC;
+
+        DB::table('persons')->where('id', session('user_id'))->update(['study_place' => $place_study]);
+
+        $peid = DB::table('pers_events')->insertGetId(
+            [
+                'pers_id'   => session('user_id'),
+                'event_id'  => $eid,
+                'is_hostel' => $is_hostel
+            ]
+        );
+        if ($who == 1)
+        {
+            if ($first_test != -1 && $first_time != -1)
+            {
+                DB::table('pers_tests')->insert(
+                    [
+                        'pers_id'           => session('user_id'),
+                        'test_id'           => $first_test,
+                        'pers_event_id'     => $peid,
+                        'start_time'        => $first_time
+                    ]
+                );
+            }
+            if ($second_test != -1 && $second_time != -1)
+            {
+                DB::table('pers_tests')->insert(
+                    [
+                        'pers_id'           => session('user_id'),
+                        'test_id'           => $second_test,
+                        'pers_event_id'     => $peid,
+                        'start_time'        => $second_time
+                    ]
+                );
+            }
+        }
+        else 
+        {
+            if ($first_testMC != -1 && $first_time != -1)
+            {
+                DB::table('pers_tests')->insert(
+                    [
+                        'pers_id'           => session('user_id'),
+                        'test_id'           => $first_testMC,
+                        'pers_test_evet'    => $peid,
+                        'start_time'        => $first_time
+                    ]
+                );
+            }
+        }
+        return $peid;
     }
 }

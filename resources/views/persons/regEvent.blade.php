@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <form action='/persons/submitRegEvent' method='POST' name="regEvent" id="regEvent">
+                    <form action='#' method='POST' name="regEvent" id="regEvent">
                         {{ csrf_field() }}
                         <div class="card">
                             <div class="card-body">
@@ -43,7 +43,7 @@
 											</div>
                                             <div class='col-md-12 mt-2'>
                                                 <label class="form-label">Место учебы</label>
-                                                <input type="text" class="form-control" name="study_place" placeholder="">
+                                                <input type="text" class="form-control" name="study_place" id="study_place" placeholder="" value="{{ $place_study }}">
                                             </div> 													
                                         </div>												 
                                     </div>	
@@ -102,7 +102,7 @@
                                         <div class='row mb-3' id="testsMC">
                                             <div class='col-md-12 mb-2'>
                                                 <label class="form-label">Тест</label>
-                                                <select class='form-control tests' name="first_testsMC" id="first_testsMC" disabled>
+                                                <select class='form-control tests' name="first_testsMC" id="first_testsMC">
                                                     <option value="-1">Выберите тест</option>
                                                     @foreach ($testsMC as $test)
                                                         <option value="{{$test->id}}" id="{{$test->id}}">{{$test->discipline}}</option>
@@ -115,19 +115,19 @@
                                         <div class='row mb-3'>
                                             <div class='col-md-12 mb-2'>
                                                 <label class="form-label">Время</label>
-                                                <select class='form-control times' name="first_time" id="first_time">
-                                                    <option>Время начала тестирования</option>
+                                                <select onchange="changeTime();"class='form-control times' name="first_time" id="first_time">
+                                                    <option value="-1">Время начала тестирования</option>
                                                     @for ($i = 0; $i < count($freeTime); $i++)
-                                                        <option value="{{ $freeTime[$i]['full'] }}" id="{{ $freeTime[$i]['full'] }}">{{ $freeTime[$i]['short'] }}</option>
+                                                        <option value="{{ $freeTime[$i]['full'] }}" id="ftt{{ ($i+1) }}">{{ $freeTime[$i]['short'] }}</option>
                                                     @endfor
                                                 </select>
                                             </div> 
                                             <div class='col-md-12 mb-2' id="timeBac">
                                                 <label class="form-label">Время</label>
-                                                <select class='form-control times' name="second_time" id="second_time" readonly>
-                                                    <option>Время начала тестирования</option>
+                                                <select class='form-control times' name="second_time" id="second_time" disabled>
+                                                    <option value="-1">Время начала тестирования</option>
                                                     @for ($i = 0; $i < count($freeTime); $i++)
-                                                        <option value="{{ $freeTime[$i]['full'] }}" id="{{ $freeTime[$i]['full'] }}">{{ $freeTime[$i]['short'] }}</option>
+                                                        <option value="{{ $freeTime[$i]['full'] }}" id="stt{{ ($i+1) }}">{{ $freeTime[$i]['short'] }}</option>
                                                     @endfor
                                                 </select>
                                             </div>  
@@ -139,7 +139,7 @@
                                             <div class='col-md-5'>
                                                 <div class="custom-controls-stacked custom-center">
                                                     <label class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="T">
+                                                        <input type="checkbox" class="custom-control-input" name="is_hostel" id="is_hostel" value="T">
                                                         <span class="custom-control-label">Требуется общежитие</span>
                                                     </label>
                                                 </div>
@@ -178,11 +178,38 @@
     <script>
         function changeTest()
         {
-            var id = $('#first_tests').val();
-            $('#second_tests').prop('disabled', false);
-            $('#second_tests').val('-1');
-            $('.tests option').show();
-            $('#st'+id).hide();
+            if ($('#first_tests').val() != -1) {
+                var id = $('#first_tests').val();
+                $('#second_tests').val('-1');
+                $('.tests option').show();
+                $('#st'+id).hide();
+            }
+            else 
+            {
+                $('#second_tests').val('-1');
+                $('#second_time').val('-1');
+                $('#second_time').prop('disabled', true);
+                $('#second_tests').prop('disabled', true);
+            }
+        }
+        function changeTime(num)
+        {
+            if ($('#first_time').val() != -1)
+            {
+                var id = $('#first_time option:selected').index();
+                $('#second_time').prop('disabled', false);
+                $('#second_tests').prop('disabled', false);
+                $('#second_time').val('-1');
+                $('.times option').show();
+                $('#stt'+id).hide();
+            }
+            else
+            {
+                $('#second_tests').val('-1');
+                $('#second_time').val('-1');
+                $('#second_time').prop('disabled', true);
+                $('#second_tests').prop('disabled', true);
+            }
         }
         function checkedRadio()
         {
@@ -199,6 +226,60 @@
         }
 
         function reg() {
+            var place_study = $('#study_place').val();
+            var who = $('input[name=target_audience]:checked').val();
+            var first_test = $('#first_tests').val();
+            var second_test = $('#second_tests').val();
+            var first_time = $('#first_time').val();
+            var second_time = $('#second_time').val();
+            var is_hostel = $('#is_hostel').val();
+            var first_testMC = $('#first_testsMC').val();
+            var eid = {{ $eid }};
+            if ((first_test != -1 || first_testMC != -1) && first_time != -1) {
+                
+                $.ajax({
+                    url: '/persons/savevent',
+                    type: 'POST',
+                    data: {
+                        eid : eid,
+                        place_study : place_study,
+                        who : who,
+                        first_test : first_test,
+                        first_time : first_time,
+                        second_test : second_test,
+                        second_time : second_time,
+                        is_hostel : is_hostel,
+                        first_testMC : first_testMC
+                    },
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        popup(data);
+                    },
+                    error: function(msg) {
+                        alert('Error, try again');
+                    }
+                });
+            }
+            else 
+            {
+                Swal.fire('Ошибка', 'Нужно выбрать минимум ОДИН тест и время к нему!', 'error')
+            }
+        }
+        function createPdf(peid, status)
+        {
+            if (status == 0)
+            {
+                // open
+            }
+            else if (status == 1)
+            {
+                // downloaded
+            }
+        }
+        function popup(data) {
             Swal.fire({
               title: '',				  
               showCloseButton: false,  
@@ -214,8 +295,8 @@
                     '<li class="mt-2">Провести хорошо время</li></ol></div>'+ 
                 '</div>'+
                 '<div class="row">'+
-                '<div class="col-md-4"><button class="btn btn-primary">Открыть</button></div>'+
-                '<div class="col-md-4"><button class="btn btn-primary">Скачать</button></div>'+
+                '<div class="col-md-4"><button class="btn btn-primary" onclicn="createPdf(' + data + ', 0);">Открыть</button></div>'+
+                '<div class="col-md-4"><button class="btn btn-primary" onclicn="createPdf(' + data + ', 1);">Скачать</button></div>'+
                 '<div class="col-md-4"><button class="btn btn-primary" onclick="Swal.close()">Отмена</button></div>'+
                 '</div>'+
                 '</div>',
