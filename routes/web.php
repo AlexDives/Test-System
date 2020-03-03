@@ -42,11 +42,11 @@ Route::get('/pers/list', 'persController@persList')->middleware('authCheck');
 Route::post('/pers/check', 'persController@persCheck')->middleware('authCheck');
 Route::get('/pers/cabinet', 'persController@persCabinet')->middleware('authCheck');
 
-Route::get('/persons', 'personsCabinetController@index');
-Route::get('/persons/events', 'personsCabinetController@events');
-Route::post('/persons/regevent', 'personsCabinetController@regevent');
-Route::post('/persons/savevent', 'personsCabinetController@savevent');
-Route::post('/persons/createPdf', 'personsCabinetController@createPdf');
+Route::get('/persons', 'personsCabinetController@index')->middleware('authCheck');
+Route::get('/persons/events', 'personsCabinetController@events')->middleware('authCheck');
+Route::post('/persons/regevent', 'personsCabinetController@regevent')->middleware('authCheck');
+Route::post('/persons/savevent', 'personsCabinetController@savevent')->middleware('authCheck');
+Route::post('/persons/createPdf', 'personsCabinetController@createPdf')->middleware('authCheck');
 
 Route::get('/test/start', 'testController@start')->middleware('authCheck');
 Route::post('/test/loadQuestList', 'testController@loadQuestList')->middleware('authCheck');

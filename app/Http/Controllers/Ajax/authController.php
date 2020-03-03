@@ -42,7 +42,7 @@ class authController extends Controller
             $persons = DB::table('persons')->where(['login' => $login])->first();
             if ($persons != null)
             {
-                if ($persons->secret_strin != null) {
+                if ($persons->secret_string == null) {
                     if (Hash::check($pass, $persons->password)) {
                         if ($persons->is_block == 'F') {
                             session(['user_id' => $persons->id, 'role_id' => 5]);
