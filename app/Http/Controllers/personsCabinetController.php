@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -126,7 +127,7 @@ class personsCabinetController extends Controller
             }
             $start = date('Y-m-d H:i:s', strtotime("+1 hours", strtotime($start)));
         }
-        $event_date = date('d.m.Y', strtotime($event->start_date));
+        $event_date = date('d.m.Y', strtotime($event->date_start));
         return view('persons.regEvent',
             [
                 'famil'         => $pers->famil,
@@ -145,8 +146,6 @@ class personsCabinetController extends Controller
 
     public function savevent(Request $request)
     {
-        
-
         $eid            = $request->eid;
         $place_study    = $request->place_study;
         $who            = $request->who;
@@ -156,7 +155,7 @@ class personsCabinetController extends Controller
         $second_time    = $request->second_time;
         $is_hostel      = $request->is_hostel = 'T' ? 'T' : 'F';
         $first_testMC   = $request->first_testMC;
-        $pe = DB::table('pers_events')->where('event_id', $eid)->count();
+        $pe = DB::table('pers_events')->where('pers_id', session('user_id'))->count();
 
         if ($pe == 0) {
 
@@ -243,5 +242,18 @@ class personsCabinetController extends Controller
     );*/
         if ($request->status == 0) return $pdf->stream();
         else if ($request->status == 1) return $pdf->download('exam-sheet.pdf');
+    }
+    function sendRequest(Request $request)
+    {
+        $pers = DB::table('persons')->where('id', session('user_id'))->first();
+        $fio = $pers->famil.' '.$pers->name.' '.$pers->otch;
+        $text = $request->texta;
+        $theme = $request->theme;
+    
+        Mail::send('persons.ajax.requestEmail', ['text' => $text, 'fio' => $fio], function ($message) use ($pers, $theme) {
+            $message->from('asu@ltsu.org', $pers->email);
+            $message->to('asu@ltsu.org', 'Тех. поддержка')->subject($theme);
+        });
+        return 0;
     }
 }

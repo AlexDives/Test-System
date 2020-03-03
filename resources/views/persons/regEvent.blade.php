@@ -270,35 +270,13 @@
         }
         function createPdf(peid, status)
         {
-            if (status == 0) {
-                let form = document.createElement('form');
-                form.action = '/persons/createPdf';
-                form.method = 'POST';
-                form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
-                // перед отправкой формы, её нужно вставить в документ
-                document.body.append(form);
-                form.submit();
-            }
-            else if (status == 1)
-            {
-                $.ajax({
-                    url: '/persons/createPdf',
-                    type: 'POST',
-                    data: {
-                        peid : peid,
-                        status : status
-                    },
-                    headers: {
-                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        popup(data);
-                    },
-                    error: function(msg) {
-                        alert('Error, try again');
-                    }
-                });
-            }
+            let form = document.createElement('form');
+            form.action = '/persons/createPdf';
+            form.method = 'POST';
+            form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
+            // перед отправкой формы, её нужно вставить в документ
+            document.body.append(form);
+            form.submit();           
         }
         function popup(data) {
             Swal.fire({

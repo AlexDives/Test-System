@@ -39,6 +39,7 @@
                     </ul>
                 </div>
                 <div class='btn-back'>
+                    <a href="#" class="side-menu__item" onclick="supportPopup()"><i class="side-menu__icon fa fa-angle"></i><span class="side-menu__label">Тех. поддержка</span></a>
                     <a href="/quit" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Выйти</span></a>
                 </div>
             </div>
@@ -190,16 +191,14 @@
         var peid = 0;
         function createPdf(status)
         {
-            
-                let form = document.createElement('form');
-                form.action = '/persons/createPdf';
-                form.method = 'POST';
-                form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
-                // перед отправкой формы, её нужно вставить в документ
-                document.body.append(form);
-                form.submit();
-            
-        }
+            let form = document.createElement('form');
+            form.action = '/persons/createPdf';
+            form.method = 'POST';
+            form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
+            // перед отправкой формы, её нужно вставить в документ
+            document.body.append(form);
+            form.submit();
+       }
         function popupPdf() {
             Swal.fire({
               title: '',				  
@@ -211,6 +210,50 @@
               cancelButtonText: 'Отмена',
               confirmButtonText:'Отправить',			   
             });
+        }
+        function supportPopup() {
+            Swal.fire({
+                title: 'Техническая поддержка',
+                showCloseButton: true,
+                html: '<div class="row">' +
+                    '<div class="col-md-12 mb-2"><b>Тема:</b></div>' +
+                    '<div class="col-md-12 mb-2"><input type="text" class="form-control" name="theme" id="theme" maxlength="50"></div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-md-12 mb-2"><b>Сообщение:</b></div>' +
+                    '<div class="col-md-12 mb-2"><textarea class="form-control" rows="3" name="texta" id="texta" maxlength="500"></textarea></div>' +
+                    '<div class="col-md-12 mb-2"><font color="red">*</font> <font style="font-size: 13px;">Данная форма предназначена только для технических вопросов сайта!</font><br>' +
+                    '<font color="red">**</font> <font style="font-size: 13px;">По всем другим вопросам обращаться в приемную комиссию!</font></div>' +
+                    '</div>',
+                showCancelButton: false,
+                focusConfirm: true,
+                cancelButtonText: 'Отмена',
+                confirmButtonText: 'Отправить',
+            }).then((result) => {
+                if (result.value) {
+                    sendReuqest();
+                }
+            });
+        }
+        function sendReuqest()
+        {
+            if ($('#theme').val() != '' && $('#texta').val() != ''){
+                $.ajax({
+                    url: '/persons/sendRequest',
+                    type: 'POST',
+                    data: {
+                        theme : $('#theme').val(),
+                        texta : $('#texta').val()
+                    },
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        if (data == -1) Swal.fire('Сообщенеи НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                        else Swal.fire('Сообщенеи отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
+                    }
+                });
+            }
         }
     </script>
 @endsection
