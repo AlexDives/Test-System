@@ -103,12 +103,14 @@ class personsCabinetController extends Controller
                     ->leftjoin('tests', 'tests.id', 'event_tests.test_id')
                     ->where('event_id', $request->eid)
                     ->where('tests.targetAudience_id', '1')
+					->where('tests.status', '1')
                     ->select('tests.*')
                     ->get();
         $testsMC = DB::table('event_tests')
                     ->leftjoin('tests', 'tests.id', 'event_tests.test_id')
                     ->where('event_id', $request->eid)
                     ->where('tests.targetAudience_id', '5')
+					->where('tests.status', '1')
                     ->select('tests.*')
                     ->get();
         $freeTime = [];

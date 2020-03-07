@@ -160,6 +160,7 @@
         {
             let form = document.createElement('form');
             form.action = '/persons/regevent';
+            form.target = '_blank';
             form.method = 'POST';
             form.innerHTML = '<input name="eid" value="' + data + '">{{ csrf_field() }}';
 

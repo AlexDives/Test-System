@@ -74,7 +74,7 @@ class regTestsController extends Controller
                     'secret_string' => $secret_string
                 ]
             );
-            $verificate_link = env('APP_URL').'/verificate?v='.$secret_string.'&email='.$email;
+            $verificate_link = 'http://test.ltsu.org/verificate?v='.$secret_string.'&email='.$email;
             Mail::send('registration.email', ['link' => $verificate_link, 'fio' => $fio], function ($message) use ($request) {
                 $message->from('asu@ltsu.org', 'ЛНУ имени Тараса Шевченко');
                 $message->to($request->email, $request->famil.' '.$request->name.' '.$request->otch)->subject('Регистрация аккаунта на test.ltsu.org');
