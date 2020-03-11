@@ -34,11 +34,12 @@
                             <a href="" class="side-menu__item"><i class="side-menu__icon  fa fa-repeat"></i><span class="side-menu__label">Обновить</span></a>
                         </li>
                         <li class="slide exam_list" style="display: none;">
-                            <a href="#" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Экзаменационный лист</span></a>
+                            <a href="#" class="side-menu__item" onclick="popupPdf();"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Экзаменационный лист</span></a>
                         </li>								 
                     </ul>
                 </div>
                 <div class='btn-back'>
+                    <a href="#" class="side-menu__item" onclick="supportPopup()"><i class="side-menu__icon fa fa-angle"></i><span class="side-menu__label">Тех. поддержка</span></a>
                     <a href="/quit" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Выйти</span></a>
                 </div>
             </div>
@@ -117,6 +118,24 @@
                 </div>
             </div>
         </div>
+        <div class="hhidde" style="visibility: hidden">
+            <div class="row">
+                <div class="col-md-12 mb-2"><b>Вы успешно зарегистрировались на <label id="event_name"></label>:</b></div>
+                <div class="col-md-12 mb-2" style="font-size:14px"><b>Для участия Вам потребуется:</b></div>
+            </div>
+            <div class="row">				    	
+                <div class="col-md-12 mb-2" style="text-align: justify; line-height: 16px; font-size: 13px;"><ol>
+                <li><b>Скачать и распечатать</b> "Экзаменационный лист", в котором указаны Ваши данные и <b>персональный PIN</b>. Без "Экзаменационного листа" Вас <b>не допустят к тестированию.</b></li>
+                <li class="mt-2"><b>Прийти</b> для подтверждения регистрации на <label id="event_name3"></label>, которое будет проходить <b><label id="event_date"></label></b>, по адресу г. Луганск,  ул. Оборонная 2: учебный корпус №2 , 2-й этаж, каб. 270</li>
+                <li class="mt-2">Провести хорошо время</li></ol></div>
+            </div>
+            <div class="row">
+            <div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(0);">Открыть</button></div>
+            <div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(1);">Скачать</button></div>
+            <div class="col-md-4"><button class="btn btn-primary" onclick="Swal.close()">Отмена</button></div>
+            </div>
+            </div>
+        </div>
         <footer class="footer">
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
@@ -141,8 +160,8 @@
         {
             let form = document.createElement('form');
             form.action = '/persons/regevent';
+            form.target = '_blank';
             form.method = 'POST';
-            alert(data);
             form.innerHTML = '<input name="eid" value="' + data + '">{{ csrf_field() }}';
 
             // перед отправкой формы, её нужно вставить в документ
@@ -167,8 +186,75 @@
                 showCancelButton: false,
                 focusConfirm: false,
             }).then((result) => {
-                aler('тык');
+                
             })
+        }
+        var peid = 0;
+        function createPdf(status)
+        {
+            let form = document.createElement('form');
+            form.action = '/persons/createPdf';
+            form.method = 'POST';
+            form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
+            // перед отправкой формы, её нужно вставить в документ
+            document.body.append(form);
+            form.submit();
+       }
+        function popupPdf() {
+            Swal.fire({
+              title: '',				  
+              showCloseButton: false,  
+              html:$('.hhidde').html(),
+              showCancelButton: false,
+              showConfirmButton: false,
+              focusConfirm: false,
+              cancelButtonText: 'Отмена',
+              confirmButtonText:'Отправить',			   
+            });
+        }
+        function supportPopup() {
+            Swal.fire({
+                title: 'Техническая поддержка',
+                showCloseButton: true,
+                html: '<div class="row">' +
+                    '<div class="col-md-12 mb-2"><b>Тема:</b></div>' +
+                    '<div class="col-md-12 mb-2"><input type="text" class="form-control" name="theme" id="theme" maxlength="50"></div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-md-12 mb-2"><b>Сообщение:</b></div>' +
+                    '<div class="col-md-12 mb-2"><textarea class="form-control" rows="3" name="texta" id="texta" maxlength="500"></textarea></div>' +
+                    '<div class="col-md-12 mb-2"><font color="red">*</font> <font style="font-size: 13px;">Данная форма предназначена только для технических вопросов сайта!</font><br>' +
+                    '<font color="red">**</font> <font style="font-size: 13px;">По всем другим вопросам обращаться в приемную комиссию!</font></div>' +
+                    '</div>',
+                showCancelButton: false,
+                focusConfirm: true,
+                cancelButtonText: 'Отмена',
+                confirmButtonText: 'Отправить',
+            }).then((result) => {
+                if (result.value) {
+                    sendReuqest();
+                }
+            });
+        }
+        function sendReuqest()
+        {
+            if ($('#theme').val() != '' && $('#texta').val() != ''){
+                $.ajax({
+                    url: '/persons/sendRequest',
+                    type: 'POST',
+                    data: {
+                        theme : $('#theme').val(),
+                        texta : $('#texta').val()
+                    },
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        if (data == -1) Swal.fire('Сообщенеи НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                        else Swal.fire('Сообщенеи отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
+                    }
+                });
+            }
         }
     </script>
 @endsection

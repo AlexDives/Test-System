@@ -28,6 +28,7 @@
 							if (data == -2) $(".error-message").text("Неверный логин или пароль!");
 							else if (data == -1) $(".error-message").text("Данный пользователь ЗАБЛОКИРОВАН!");
 							else if (data == -3) $(".error-message").text("Данный пользователь не найден!");
+							else if (data == -4) $(".error-message").text("Данный пользователь не прошел верификацию!");
 							else {
 								check_role(data['role_id']);
 							}
