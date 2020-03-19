@@ -69,12 +69,16 @@ class regTestsController extends Controller
                     'otch'          => $otch,
                     'birthday'      => $birthday,
                     'gender'        => $gender,
-                    'pasp_ser'      => $serp,
-                    'pasp_num'      => $nump,
+                    
                     'PIN'           => $pin,
                     'secret_string' => $secret_string
                 ]
             );
+            /*
+            'pasp_ser'      => $serp,
+                    'pasp_num'      => $nump,
+            */
+
             $verificate_link = 'http://test.ltsu.org/verificate?v='.$secret_string.'&email='.$email;
             Mail::send('registration.email', ['link' => $verificate_link, 'fio' => $fio], function ($message) use ($request) {
                 $message->from('asu@ltsu.org', 'ЛНУ имени Тараса Шевченко');
@@ -97,5 +101,15 @@ class regTestsController extends Controller
             }
         }
         echo '<script>location.replace("/");</script>';
+    }
+    function resetPassword(Request $request)
+    {
+        $pers = DB::table('persons')->where('login', $request->login)->first();
+        if ($pers != null)
+        {
+            DB::table('persons')->where('id', $pers->id)->update(['password' => Hash::make($request->pass)]);
+            echo "OK!";
+        }
+        else echo "NO OK!!!!";
     }
 }

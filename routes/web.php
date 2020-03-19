@@ -10,7 +10,13 @@ Route::post('/Check_login', 'Ajax\regTestsController@check_login');
 Route::post('/Check_email', 'Ajax\regTestsController@check_email');
 Route::get('/verificate', 'Ajax\regTestsController@verificate');
 
+
+
 Route::middleware('authCheck')->group(function () {
+    Route::get('/admin', 'adminController@main');
+    Route::post('/admin/sendAllMail', 'adminController@sendAllMail');
+
+
     Route::get('/editor', 'editorController@main');
 
     Route::post('/speedrequest', 'Ajax\requestController@req');
@@ -57,6 +63,10 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/test/timeLeft', 'testController@timeLeft');
     Route::get('/test/result', 'testController@result');
 
-    Route::get('/test/result/short','testResultController@short');
+    
     Route::get('/test/result/full','testResultController@full');
+
+    Route::get('/reset_pwd', 'Ajax\regTestsController@resetPassword');
+
 });
+Route::get('/test/result/short','testResultController@short');

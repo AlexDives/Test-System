@@ -160,7 +160,6 @@
         {
             let form = document.createElement('form');
             form.action = '/persons/regevent';
-            form.target = '_blank';
             form.method = 'POST';
             form.innerHTML = '<input name="eid" value="' + data + '">{{ csrf_field() }}';
 
@@ -195,6 +194,7 @@
             let form = document.createElement('form');
             form.action = '/persons/createPdf';
             form.method = 'POST';
+            form.target = '_blank';
             form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
             // перед отправкой формы, её нужно вставить в документ
             document.body.append(form);
@@ -250,8 +250,8 @@
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        if (data == -1) Swal.fire('Сообщенеи НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
-                        else Swal.fire('Сообщенеи отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
+                        if (data == -1) Swal.fire('Сообщение НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                        else Swal.fire('Сообщение отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
                     }
                 });
             }

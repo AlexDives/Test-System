@@ -18,7 +18,7 @@
 @section('content')
     <div class="my-3 my-md-5 toggle-content">
         <div class="side-app">
-            <div class="page-header"></div><div class="page-header"></div>
+            <div class="page-header"></div>
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -273,6 +273,7 @@
             let form = document.createElement('form');
             form.action = '/persons/createPdf';
             form.method = 'POST';
+            form.target = '_blank';
             form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
             // перед отправкой формы, её нужно вставить в документ
             document.body.append(form);
@@ -326,6 +327,9 @@
         }
         #testsMC {
             display: none;
+        }
+        .m-5 {
+            margin: 1rem !important;
         }
     </style>
 @endsection

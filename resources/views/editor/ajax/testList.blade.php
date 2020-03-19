@@ -8,7 +8,8 @@
                     <div class='row'>
                         <div class='col-md-1 col-2'>{{ $loop->iteration }}</div>
                         <div class='col-md-4 col-5'>{{ $test->discipline }}</div>
-                        <div class='col-md-4 col-5'>{{ $test->targetAudienceName }}</div>
+                        <div class='col-md-2 col-5'>{{ $test->targetAudienceName }}</div>
+                        <div class='col-md-2 col-5'>{{ $test->typeTestName }}</div>
                         <div class='col-md-3 m-h'>{{ date('d.m.Y', strtotime($test->date_crt))}}</div>
                     </div>
                 </h3>

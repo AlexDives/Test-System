@@ -1,0 +1,41 @@
+*,
+body,
+html {
+    font-family: DejaVu Sans, sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 120px;
+    text-align: center;
+}
+
+header h3 {
+    font-weight: normal;
+    margin-top: 16px;
+}
+
+.content table {
+    margin: 20px 0px 20px 0px;
+    font-size: 15px;
+}
+
+.content table tr td>input {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 120mm;
+    height: 15px;
+    padding-left: 10px;
+}
+
+.content table tr td>input:focus {
+    outline: none;
+}
+
+.content table tr td>input:disabled {
+    background-color: inherit;
+    color: black;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 12px;
+}

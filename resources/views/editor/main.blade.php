@@ -85,7 +85,8 @@
                                         <div class='row'>
                                             <div class='col-md-1 col-2'>№</div>
                                             <div class='col-md-4 col-5'>Дисциплина</div>
-                                            <div class='col-md-4 col-5'>Целевая аудитория</div>
+                                            <div class='col-md-2 col-5'>Целевая аудитория</div>
+                                            <div class='col-md-2 col-5'>Тип теста</div>
                                             <div class='col-md-3 m-h'>Дата создания</div>
                                         </div>
                                     </h3>

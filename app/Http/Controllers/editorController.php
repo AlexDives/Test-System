@@ -145,7 +145,7 @@ class editorController extends Controller
         } else if ($request->tid > 0) {
             DB::table('tests')->where('id', $request->tid)->update(
                 [
-                    'user_id' => session('user_id'), 'targetAudience_id' => $targetAudience, 'type_id' => $typeTest,
+                    'targetAudience_id' => $targetAudience, 'type_id' => $typeTest,
                     'discipline' => $discipline, 'validator' => $validator, 'min_ball' => $min_ball,
                     'max_ball' => $max_ball,  'test_time' => $test_time, 'count_question' => $count_question
                 ]
