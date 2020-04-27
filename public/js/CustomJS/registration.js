@@ -75,7 +75,6 @@ function check_email() {
             alert('Error, try again');
         }
     });
-
 }
 $(document).on('click', '#reg', function(e) {
     var empty = true;
