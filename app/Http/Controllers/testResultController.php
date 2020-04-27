@@ -10,6 +10,7 @@ class testResultController extends Controller
 {
     public function short(Request $request)
     {
+<<<<<<< HEAD
         $test = DB::table('tests')
             ->leftJoin('type_test', 'type_test.id', '=', 'tests.type_id')
             ->leftjoin('pers_tests', 'pers_tests.test_id', 'tests.id')
@@ -107,6 +108,13 @@ class testResultController extends Controller
                     'stlevel'           => $stlevel
                 ]
             );*/
+=======
+        $pdf = PDF::loadView('testing.testResults.short');
+        if ($request->t == 'pdf')
+            return $pdf->stream();
+        else
+            return view('testing.testResults.short');
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     }
 
     public function full(Request $request)

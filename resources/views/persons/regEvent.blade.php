@@ -290,6 +290,7 @@
                 '</div>'+
                 '<div class="row">'+				    	
                     '<div class="col-md-12 mb-2" style="text-align: justify; line-height: 16px; font-size: 13px;"><ol>'+
+<<<<<<< HEAD
                     '<li><b>Скачать и распечатать</b> "Экзаменационный лист", в котором указаны Ваши данные и <b>персональный PIN</b>.</li>'+
                     '<li class="mt-2">{{ $event_name }} будет проходить <b>{{ $event_date }}</b> в On-line режиме.</li>'+
                     '<li class="mt-2">Провести хорошо время</li></ol></div>'+ 
@@ -302,6 +303,12 @@
                     '<li class="mt-2">Провести хорошо время</li></ol></div>'+ 
                 '</div>'+*/
 
+=======
+                    '<li><b>Скачать и распечатать</b> "Экзаменационный лист", в котором указаны Ваши данные и <b>персональный PIN</b>. Без "Экзаменационного листа" Вас <b>не допустят к тестированию.</b></li>'+
+                    '<li class="mt-2"><b>Прийти</b> для подтверждения регистрации на {{ $event_name }}, которое будет проходить <b>{{ $event_date }}</b>, по адресу г. Луганск,  ул. Оборонная 2: учебный корпус №2 , 2-й этаж, каб. 270</li>'+
+                    '<li class="mt-2">Провести хорошо время</li></ol></div>'+ 
+                '</div>'+
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                 '<div class="row">'+
                 '<div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(' + data + ', 0);">Открыть</button></div>'+
                 '<div class="col-md-4"><button class="btn btn-primary" onclick="createPdf(' + data + ', 1);">Скачать</button></div>'+
@@ -324,7 +331,13 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('fonts/fonts/font-awesome.min.css') }}" rel="stylesheet">	
     <style>
+<<<<<<< HEAD
         
+=======
+        body {
+            overflow: hidden;
+        }
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
         .custom-center{
             flex-direction: column;
             display: flex;

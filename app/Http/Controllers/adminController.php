@@ -62,6 +62,7 @@ class adminController extends Controller
         }
         return 0;
     }
+<<<<<<< HEAD
 
     function statistic(Request $request)
     {
@@ -152,4 +153,6 @@ class adminController extends Controller
             'persCount_bad' => $persCount_bad
         ]);
     }
+=======
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 }

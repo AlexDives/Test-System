@@ -91,5 +91,9 @@
                 </p>
             </div>
         </li>		
+<<<<<<< HEAD
     @endforeach
+=======
+    @endforeach						 	
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 </ul>

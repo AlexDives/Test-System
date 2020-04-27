@@ -87,7 +87,11 @@
                                     <h3>
                                         <div class='row'>
                                             <div class='col-md-1 col-2'>№</div>
+<<<<<<< HEAD
                                             <div class='col-md-4 col-5'>Направление подготовки</div>
+=======
+                                            <div class='col-md-4 col-5'>Дисциплина</div>
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                                             <div class='col-md-2 col-5'>Целевая аудитория</div>
                                             <div class='col-md-2 col-5'>Тип теста</div>
                                             <div class='col-md-3 m-h'>Дата создания</div>

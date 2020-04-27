@@ -82,9 +82,12 @@
                                             </div>
                                         </div>
                                     </div>
+<<<<<<< HEAD
                                     <div class="row" style="justify-content: center;">
                                         <button type="button" class="btn btn-info" onclick="showEvents();">Мероприятия</button>
                                     </div>
+=======
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                                 </div>			 				 
                             </div>
                         </div>
@@ -158,7 +161,10 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
+<<<<<<< HEAD
     <script src="{{ asset('/js/script.js') }}"></script>
+=======
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     <script>
         function selectedEvent(data)
         {
@@ -255,7 +261,11 @@
                     },
                     success: function(data) {
                         if (data == -1) Swal.fire('Сообщение НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+<<<<<<< HEAD
                         else Swal.fire('Сообщение отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'success');
+=======
+                        else Swal.fire('Сообщение отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
+>>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                     }
                 });
             }
