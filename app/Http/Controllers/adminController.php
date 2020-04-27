@@ -62,6 +62,22 @@ class adminController extends Controller
         }
         return 0;
     }
+    
+    function sendAllMailWithAttach(Request $request)
+    {
+        //persons = DB::table('persons')->where('id', 15)->get(); 
+        //hometesting : uvGJTrRNU475
+
+        $persons = DB::table('persons')->get();
+        foreach ($persons as $pers) {
+            Mail::send('admin.ajax.templateEmailWithAttach', [], function ($message) use ($pers) {
+                $message->from('asu@ltsu.org', 'Тех. поддержка ЛНУ имени Тараса Шевченко');
+                $message->to($pers->email, $pers->email)->subject('Инструкция для прохождения тестирования в режиме On-line');
+                $message->attach('https://test.ltsu.org/files/helper.docx');
+            });
+        }
+        return 0;
+    }
 
     function statistic(Request $request)
     {
@@ -83,6 +99,28 @@ class adminController extends Controller
                     ->select('et.*', 't.discipline', 'tt.name as type')
                     ->get();
         $persCount  = DB::table('pers_events')->where('event_id', $mer_id)->get();
+
+        $count_pers_in_test = DB::table('pers_events as pe')
+                    ->distinct()
+                    ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
+                    ->where('pt.status', '1')
+                    ->where('pe.event_id', $mer_id)
+                    ->count();
+
+        $count_pers_end_test = DB::table('pers_events as pe')
+                    ->distinct()
+                    ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
+                    ->where('pt.status', '2')
+                    ->where('pe.event_id', $mer_id)
+                    ->count();
+
+        $count_pers_pause_test = DB::table('pers_events as pe')
+                    ->distinct()
+                    ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
+                    ->where('pt.status', '3')
+                    ->where('pe.event_id', $mer_id)
+                    ->count();
+
         $persCount_bad = 0;
         foreach($persCount as $pc) if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->count() == 0) $persCount_bad++;
         
@@ -147,9 +185,12 @@ class adminController extends Controller
 
         //dd((object)$tests);
         return view('admin.ajax.listTest', [
-            'tests'         => $tests,
-            'persCount'     => $persCount,
-            'persCount_bad' => $persCount_bad
+            'tests'                     => $tests,
+            'persCount'                 => $persCount,
+            'persCount_bad'             => $persCount_bad,
+            'count_pers_in_test'        => $count_pers_in_test,
+            'count_pers_end_test'       => $count_pers_end_test,
+            'count_pers_pause_test'     => $count_pers_pause_test
         ]);
     }
 }

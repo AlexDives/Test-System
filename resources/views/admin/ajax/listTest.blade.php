@@ -33,5 +33,9 @@
             </table>
         </div>
     </div>
-    <div class="card-body">Всего зарегистрировано: {{ $persCount }} чел. | Проблемная регистрация: {{ $persCount_bad }} чел.</div>
+    <div class="card-body">
+        <div class="row">Всего зарегистрировано: {{ $persCount }} чел. | Проблемная регистрация: {{ $persCount_bad }} чел.</div>
+        <div class="row">Проходит тестирование: <span style="color:darkgoldenrod; font-weight:600; margin:0 5px;"> {{ $count_pers_in_test }} </span> чел.</div>  
+        <div class="row">Прошло тестирование (минимум 1 тест): <span style="color:green; font-weight:600; margin:0 5px;"> {{ $count_pers_end_test }} </span> чел.</div>  
+        <div class="row">На паузе (минимум 1 тест): <span style="color:darkred; font-weight:600; margin:0 5px;"> {{ $count_pers_pause_test }} </span> чел.</div>  
 </div>

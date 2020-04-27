@@ -15,6 +15,8 @@ Route::middleware('authCheck')->group(function () {
     Route::get('/admin/statistic', 'adminController@statistic')->name('admin.statistic');
     Route::post('/admin/statistic/get', 'adminController@load_statisctic');
     Route::post('/admin/sendAllMail', 'adminController@sendAllMail');
+    Route::post('/admin/sendAllMailWithAttach', 'adminController@sendAllMailWithAttach');
+    Route::get('/admin/ttt', function(){ return view('admin.ajax.templateEmailWithAttach'); });
 
 
     Route::get('/editor', 'editorController@main');
@@ -60,6 +62,7 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/persons/sendRequest', 'personsCabinetController@sendRequest');
 
     Route::get('/test/start', 'testController@start');
+    Route::post('/test/speedTest', 'testController@speedTest');
     Route::post('/test/loadQuestList', 'testController@loadQuestList');
     Route::post('/test/selectedQuest', 'testController@selectedQuest');
     Route::post('/test/confirmResponse', 'testController@confirmResponse');

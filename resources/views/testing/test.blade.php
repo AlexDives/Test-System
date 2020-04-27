@@ -29,10 +29,10 @@
                     <div class='card'>
                         <div class='card-body'>
                             <div class='row'>
-                                <div class='col-md-4 text-left'>{{ $test_name }}</div>
+                                <div class='col-md-4 text-left' @if( $role_id == 1 ) onclick="st('full');" @endif>{{ $test_name }}</div>
                                 <div class='col-md-4 text-center'>
                                     <h1>
-                                        <div id="countdown" class="countdown">
+                                        <div id="countdown" class="countdown" @if( $role_id == 1 ) onclick="st('fix');" @endif>
                                             <div class="countdown-number">
                                                 <span class="hours countdown-time"></span>
                                                 :
@@ -112,13 +112,36 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/quill2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert4.min.js') }}"></script>+
+    <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
 @endsection
 
 @section('includeBeforeScripts')
     <script src="{{ asset('js/CustomJS/testing.js') }}"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
-    <script type="text/javascript"> fillVariables({{$timeLeft}}, {{$pers_test_id}}, {{$test->id}});</script>
+    <script type="text/javascript"> fillVariables({{$timeLeft}}, {{$pers_test_id}}, {{$test->id}}, {{ $minuts_spent }}, {{ $test->test_time }});</script>
+    @if( $role_id == 1 )
+        <script>
+            function st(t) {
+                var tid = $('#tid').val();
+                if (t == 'full') {
+                    $.ajax({
+                        url: '/test/speedTest',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: { tid: tid },
+                        success: function(data) {
+                            endTest(0);
+                        },
+                        error: function(msg) {
+                            alert('Ошибка');
+                        }
+                    });
+                } else if ('fix') endTest(0);
+            }
+        </script>
+    @endif
 @endsection
 
 @section('includeStyles')

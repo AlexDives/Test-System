@@ -13,10 +13,10 @@
             </thead>
             <tbody>
                 @foreach ($persTests as $pt)
-                    <tr <?php echo htmlspecialchars_decode($successTest[$pt->test_id]); ?>>
+                    <tr <?php echo htmlspecialchars_decode($successTest[$pt->id]); ?>>
                         <td>{{$loop->iteration}}</td>
                         <td class="text-sm font-weight-600">{{ $pt->discipline }}</td>
-                        <td class='text-center'><?php echo htmlspecialchars_decode($statusTest[$pt->test_id]); ?></td>
+                        <td class='text-center'><?php echo htmlspecialchars_decode($statusTest[$pt->id]); ?></td>
                         <td class='text-center'>{{ $pt->start_time }}</td>
                         <td class='text-center'>
                             @if (!empty($pt->minuts_spent)){{ $pt->minuts_spent }} мин. @endif

@@ -4,7 +4,7 @@
   <meta charset="UTF-8"> 
   <meta content="width=device-width, initial-scale=1" name="viewport"> 
   <meta content="telephone=no" name="format-detection"> 
-  <title>Регистрация на сайте test.ltsu.org</title> 
+  <title>ЛНУ имени Тараса Шевченко</title> 
   <!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}

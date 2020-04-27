@@ -8,6 +8,22 @@ function fullscreen(element) {
     }
 }
 
+function timerPause() {
+    i = 10;
+
+    let timerId = setInterval(() => {
+        var text = 'Да';
+        text = text + ' (' + i + ')';
+        $('.swal2-confirm').html(text);
+        i--;
+    }, 1000);
+
+    setTimeout(() => {
+        clearInterval(timerId);
+        $('.swal2-confirm').click();
+    }, 12000);
+}
+
 function fastStop() {
     Swal.fire({
         title: '<center style="color:red;">В Н И М А Н И Е</center>',
@@ -26,6 +42,7 @@ function fastStop() {
             fullscreen(document.documentElement);
         }
     });
+    timerPause();
 }
 var onfullscreenchange = function(e) {
     if (document.fullscreenElement == null) {
@@ -53,18 +70,20 @@ var currentQuestion = 0;
 var ballMass = [];
 var lastMinutes = 0;
 var maxMinutes = 0;
+var max_test_time = 0;
 var minuts_spent = 0;
 var pers_test_id = 0;
 var test_id = 0;
-var timeLeft = 0;
 
-function fillVariables(timeLeft, pers_test_id, test_id) {
+var cor_ball = 0;
+
+function fillVariables(timeLeft, pers_test_id, test_id, minuts_spent, max_test_time) {
     this.lastMinutes = timeLeft;
     this.maxMinutes = timeLeft;
-    this.minuts_spent = timeLeft - lastMinutes;
+    this.minuts_spent = minuts_spent;
     this.pers_test_id = pers_test_id;
     this.test_id = test_id;
-    this.timeLeft = timeLeft;
+    this.max_test_time = max_test_time;
 }
 
 function ajaxQuestList(test_id, pers_test_id) {
@@ -90,7 +109,7 @@ function ajaxQuestList(test_id, pers_test_id) {
 function loadQuestList(data) {
     data.forEach(element => {
         currentQuestion++;
-        ballMass[element["quest_id"]] = element["ball"];
+        ballMass[element["quest_id"]] = element["quest_ball"];
         $('.li').append('<div class="s-ask page-item "><a class="page-link item" href="#" onclick="selectedQuest(' + element["quest_id"] + ', this);">' + currentQuestion + '</a></div>');
     });
     if (currentQuestion != 0) {
@@ -180,7 +199,7 @@ function endTest(type) {
         focusConfirm: false,
         confirmButtonText: 'OK',
         closeOnClickOutside: false,
-        icon: 'infortmation',
+        icon: 'info',
     }).then((result) => {
         if (result.value) {
             window.location.href = "/test/result";
@@ -190,6 +209,9 @@ function endTest(type) {
 
 function deleteQuest() {
     var qid = $('#idQuest').val();
+    /*var c = 0 + cor_ball + ballMass[qid];
+    console.log(cor_ball + ' + ' + ballMass[qid] + ' = ' + c);
+    cor_ball += ballMass[qid];*/
     ballMass[qid] = null;
     var indexRem = $('.s-ask').filter('.active').index();
     if (currentQuestion - 1 == indexRem) indexRem = 0;
@@ -258,23 +280,6 @@ function confirmResponse() {
                     alert('Ошибка');
                 }
             });
-        }
-    });
-}
-
-function st() {
-    $.ajax({
-        url: '/test/speedTest',
-        type: 'POST',
-        headers: {
-            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: { tid: tid, qid: qid, ansid: selectedAnswerId, ptid: ptid },
-        success: function(data) {
-            endTest(0);
-        },
-        error: function(msg) {
-            alert('Ошибка');
         }
     });
 }
@@ -353,6 +358,7 @@ Swal.fire({
 
                 if ((t.minutes != 0) && (t.minutes != maxMinutes) && (t.minutes < lastMinutes)) {
                     lastMinutes = t.minutes;
+                    minuts_spent = max_test_time - lastMinutes;
                     time_left();
                 }
                 if (t.total <= 0) {
@@ -366,7 +372,7 @@ Swal.fire({
 
         var tday = 1;
         var thour = 1;
-        var tmin = timeLeft;
+        var tmin = lastMinutes;
         var deadline = new Date(Date.parse(new Date()) + tday * thour * tmin * 60 * 1000);
 
         initializeClock('countdown', deadline);

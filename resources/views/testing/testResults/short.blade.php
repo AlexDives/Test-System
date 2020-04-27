@@ -23,7 +23,7 @@
                     </td>
                 </tr>
             </table>
-            @if ($test_type != 'Пробное тестирование')
+            @if ($test_type != 'Пробный тест')
                 <table>
                     <tr>
                         <td style="width: 50mm;">Специальность:</td>

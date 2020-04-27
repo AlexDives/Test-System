@@ -38,31 +38,17 @@
                             </thead>
                             <tbody>
                                 @foreach ($persTests[$pe->id] as $pt)
-                                @if (isset($pt->discipline))
-                                    <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td class="text-sm font-weight-600">{{ $pt->discipline }}</td>
-                                        <td class='text-center'>
-                                            @if($pt->status == 0)
-                                                <span class='badge badge-primary'>Готов к прохождению</span>
-                                            @elseif($pt->status == 1)
-                                                <span class='badge badge-warning'>В процессе</span>        
-                                            @elseif($pt->status == 2)
-                                                @if ($pt->test_ball_correct >= $pt->min_ball)
-                                                    <span class='badge badge-success'>Пройден</span>
-                                                @else
-                                                    <span class='badge badge-danger'>Не пройден</span>
-                                                @endif
-                                            @elseif($pt->status == 3)
-                                                <span class='badge badge-danger'>Приостановлен</span>
-                                            @endif
-                                        </td>
-                                        <td class='text-center'>{{ date('d.m.Y H:i', strtotime($pt->start_time))}}</td>
-                                        <td class='text-center'>
-                                            @if (!empty($pt->minuts_spent)){{ $pt->minuts_spent }} мин. @endif
-                                        </td>
-                                        <td class='text-center'>{{ $pt->test_ball_correct }}</td>
-                                    </tr>
+                                    @if (isset($pt->discipline))
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td class="text-sm font-weight-600">{{ $pt->discipline }}</td>
+                                            <td class='text-center'><?php echo htmlspecialchars_decode($statusTest[$pt->test_id]); ?></td>
+                                            <td class='text-center'>{{ date('d.m.Y H:i', strtotime($pt->start_time))}}</td>
+                                            <td class='text-center'>
+                                                @if (!empty($pt->minuts_spent)){{ $pt->minuts_spent }} мин. @endif
+                                            </td>
+                                            <td class='text-center'>{{ $pt->test_ball_correct }}</td>
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>

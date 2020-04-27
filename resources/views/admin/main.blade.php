@@ -31,6 +31,9 @@
                             <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMail();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Рассылка на E-mail</span></a>
                         </li>	
                         <li class="slide">
+                            <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMailWithAttach();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">E-mail с файлом</span></a>
+                        </li>	
+                        <li class="slide">
                             <a href="/admin/statistic" class="side-menu__item" id="statistic"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Статистика</span></a>
                         </li>	
                         <li class="slide">
@@ -134,11 +137,25 @@
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        if (data == -1) Swal.fire('Сообщенеи НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                        if (data == -1) Swal.fire('Сообщение НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
                         else Swal.fire('Сообщение отправлено!', 'Рассылка прошла успешно!', 'success');
                     }
                 });
             }
+        }
+        function sendAllMailWithAttach()
+        {
+            $.ajax({
+                url: '/admin/sendAllMailWithAttach',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if (data == -1) Swal.fire('Сообщение НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                    else Swal.fire('Сообщение отправлено!', 'Рассылка прошла успешно!', 'success');
+                }
+            });
         }
         function sendAllMail()
         {

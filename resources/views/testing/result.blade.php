@@ -30,7 +30,7 @@
                         <li class="slide show_report">
                             <a href="#" onclick="shortResult();" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
                         </li>
-                        @if ($role == 1 || $role == 2 || $role == 3)
+                        @if ($role == 1 || $role == 2)
                             <li class="slide show_report">
                                 <a href="#" class="side-menu__item"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Полный отчет</span></a>
                             </li>
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
                 <div class='btn-back'>
-                    <a href="/pers/cabinet" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Выйти</span></a>
+                    <a href="/pers/cabinet" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Назад</span></a>
                 </div>
             </div>
         </div>

@@ -67,7 +67,6 @@ class persController extends Controller
         $persTests = DB::table('pers_tests')
             ->where('pers_tests.pers_id', session('pers_id'))
             ->leftjoin('tests', 'tests.id', 'pers_tests.test_id')
-            ->leftjoin('pers_events', 'pers_events.pers_id', 'pers_tests.pers_id')
             ->select(
                 'pers_tests.id',
                 'tests.id as test_id',
@@ -81,7 +80,7 @@ class persController extends Controller
                 'tests.min_ball',
                 'tests.count_question',
                 'pers_tests.minuts_spent',
-                'pers_events.event_id'
+                'pers_tests.pers_event_id'
             )
             ->orderby('pers_tests.id', 'desc')
             ->get();
@@ -113,6 +112,14 @@ class persController extends Controller
             if ($max_quest != $test->count_question) $testScatter_success = false;
 
             // добавить проверку на дату и время ивента этого теста
+            $event = DB::table('pers_events')
+                        ->leftjoin('events', 'events.id', 'pers_events.event_id')
+                        ->where('pers_events.id', $test->pers_event_id)
+                        ->select('events.*')
+                        ->first();
+
+            if((strtotime($event->date_start) <= time()) && (strtotime($event->date_end) >= time()) || $test->status == 2) $testScatter_success = true;
+            else $testScatter_success = false;
 
             if ($testScatter_success) 
             {
@@ -124,25 +131,25 @@ class persController extends Controller
                         $status = "<span class='badge badge-warning'>В процессе</span>";
                         break;
                     case 2:
-                        $status = $pt->test_ball_correct >= $pt->min_ball ? "<span class='badge badge-success'>Пройден</span>" : "<span class='badge badge-danger'>Не пройден</span>";
+                        $status = $test->test_ball_correct >= $test->min_ball ? "<span class='badge badge-success'>Пройден</span>" : "<span class='badge badge-danger'>Не пройден</span>";
                         break;
                     case 3:
                         $status = "<span class='badge badge-danger'>Приостановлен</span>";
                         break;
                 }
                 $successTest += [
-                    $test->test_id => "onclick='checkedRow($(this),".$pt->status.");testPersId=".$pt->id."'"
+                    $test->id => "onclick='checkedRow($(this),".$test->status.");testPersId=".$test->id."'"
                 ];
             }
             else 
             {
                 $status = "<span class='badge badge-danger'>Тест не доступен</span>";
                 $successTest += [
-                    $test->test_id => ""
+                    $test->id => ""
                 ];
             }
             $statusTest += [
-                $test->test_id => $status
+                $test->id => $status
             ];
         }
 

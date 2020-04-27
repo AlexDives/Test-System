@@ -20,7 +20,8 @@ class testController extends Controller
                 'persons.name',
                 'persons.otch',
                 'pers_tests.start_time',
-                'pers_tests.timeLeft'
+                'pers_tests.timeLeft',
+                'pers_tests.minuts_spent'
             )
             ->where('pers_tests.id', $request->ptid)
             ->where('pers_tests.status', '<>', '2')
@@ -28,6 +29,7 @@ class testController extends Controller
         if ($test != null) {
             $start_time = $test->start_time != null ? $test->start_time : date("Y-m-d H:i:s", time());
             $timeLeft = $test->timeLeft != 0 ? $test->timeLeft : $test->test_time;
+            $minuts_spent = $test->minuts_spent;
 
             testController::generateTest($request->ptid, $test->id);
             session(['ptid' => $request->ptid]);
@@ -38,14 +40,14 @@ class testController extends Controller
                     [
                         'start_time'    => $start_time,
                         'timeLeft'      => $timeLeft,
-                        'minuts_spent' => 0,
+                        'minuts_spent'  => $minuts_spent,
                         'last_active'   => date("Y-m-d H:i:s", time()),
                         'status'        => 1
                     ]
                 );
 
             $test_name = $test->typeTestName . ' - ' . $test->discipline;
-            return view('testing.test', ['test' => $test, 'test_name' => $test_name, 'pers_test_id' => $request->ptid, 'timeLeft' => $timeLeft]);
+            return view('testing.test', ['test' => $test, 'test_name' => $test_name, 'pers_test_id' => $request->ptid, 'timeLeft' => $timeLeft, 'minuts_spent'  => $minuts_spent, 'role_id' => session('role_id')]);
         } else echo '<script>location.replace("/pers/cabinet");</script>';
         exit;
     }
@@ -189,6 +191,20 @@ class testController extends Controller
     public function result(Request $request)
     {
         $ptid = session('ptid');
+
+        //////////////////////////////////////////
+        $correctBall = DB::table('pers_test_details')
+        ->where('pers_test_id', $ptid)
+        ->whereNotNull('answer_id')
+        ->sum('answer_ball');
+        divesController::fix($ptid, $correctBall);
+        //////////////////////////////////////////
+
+        $correctBall = DB::table('pers_test_details')
+        ->where('pers_test_id', $ptid)
+        ->whereNotNull('answer_id')
+        ->sum('answer_ball');
+
         $test = DB::table('tests')
             ->leftJoin('type_test', 'type_test.id', '=', 'tests.type_id')
             ->leftjoin('pers_tests', 'pers_tests.test_id', 'tests.id')
@@ -202,6 +218,7 @@ class testController extends Controller
             )
             ->where('pers_tests.id', $ptid)
             ->first();
+        if ($test == null) echo '<script>location.replace("/pers/cabinet");</script>';
         $countAllQuestion = $test->count_question;
         $maxBall = $test->max_ball;
         $maxTime = $test->test_time;
@@ -222,16 +239,9 @@ class testController extends Controller
             ->whereNotNull('answer_id')
             ->count();
 
-        $correctBall = DB::table('pers_test_details')
-            ->where('pers_test_id', $ptid)
-            ->whereNotNull('answer_id')
-            ->sum('answer_ball');
+        
         $startTime = $test->start_time;
         $endTime = $test->end_time != null ? $test->end_time : date("Y-m-d H:i:s", time());
-
-        /*$timestampStart = strtotime($startTime);
-        $timestampEnd = strtotime($endTime);
-        $correntMinutes = round(($timestampEnd - $timestampStart) / 60);*/
 
         $correntMinutes = $test->minuts_spent;
 
@@ -276,50 +286,45 @@ class testController extends Controller
 
     function speedTest(Request $request)
     {
-        if ((session('role_id') == 1) || (session('role_id') == 2)) {
+        if ((session('role_id') == 1)) {
             $pt = DB::table('pers_tests')
                 ->where('id', session('ptid'))
                 ->first();
             if ($pt != null) {
-                $tid = DB::table('pers_test_details')
+                $pers_test_details = DB::table('pers_test_details')
                     ->where('pers_test_id', session('ptid'))
-                    ->where('test_id', $request->tid)
-                    ->first();
-                if ($tid != null) {
-                    $pers_test_details = DB::table('pers_test_details')
-                        ->where('pers_test_id', session('ptid'))
-                        ->get();
-                    if ($pers_test_details != null) {
-                        foreach ($pers_test_details as $ptd) {
-                            $ansDetail = DB::table('question_details')->where('quest_id', $ptd->quest_id)->where('type', 'cor')->first();
+                    ->get();
+                if ($pers_test_details != null) {
+                    foreach ($pers_test_details as $ptd) {
+                        $ansDetail = DB::table('question_details')->where('quest_id', $ptd->quest_id)->where('type', 'cor')->first();
 
-                            if ($ansDetail != null) {
-                                if ($ansDetail->type == 'cor') {
-                                    $quest = DB::table('questions')->where('id', $ptd->quest_id)->first();
-                                    $ansBall = $quest->ball;
-                                } else $ansBall = 0;
+                        if ($ansDetail != null) {
+                            if ($ansDetail->type == 'cor') {
+                                $quest = DB::table('questions')->where('id', $ptd->quest_id)->first();
+                                $ansBall = $quest->ball;
+                            } else $ansBall = 0;
 
-                                $user = DB::table('users')->where('id', session('user_id'))->first();
-                                DB::table('pers_test_details')
-                                    ->where('pers_test_id', session('ptid'))
-                                    ->where('test_id', $request->tid)
-                                    ->where('quest_id', $ptd->quest_id)
-                                    ->update(
-                                        [
-                                            'answer_id'     => $ansDetail->id,
-                                            'answer_ball'   => $ansBall,
-                                            'answer_time'   => date("Y-m-d H:i:s", time()),
-                                            'user_nick'     => $user->login,
-                                            'aud_num'       => $user->aud_num,
-                                            'comp_num'      => $user->comp_num
-                                        ]
-                                    );
-                                return 0; // all right
-                            } else return -4; // Не найден ansDetail, обратитесь к администратору! 
+                            $user = DB::table('users')->where('id', session('user_id'))->first();
+                            DB::table('pers_test_details')
+                                ->where('pers_test_id', session('ptid'))
+                                ->where('test_id', $request->tid)
+                                ->where('quest_id', $ptd->quest_id)
+                                ->update(
+                                    [
+                                        'answer_id'     => $ansDetail->id,
+                                        'answer_ball'   => $ansBall,
+                                        'answer_time'   => date("Y-m-d H:i:s", time()),
+                                        'user_nick'     => $user->login,
+                                        'aud_num'       => $user->aud_num,
+                                        'comp_num'      => $user->comp_num
+                                    ]
+                                );
+                            
                         }
-                    } else return -3; // Не найден qid, обратитесь к администратору! 
-                } else return -2; // Не найден tid, обратитесь к администратору! 
-            } else return -1; // Не найден ptid, обратитесь к администратору!
+                    }
+                    return 0; // all right
+                } else return -3; // Не найден qid, обратитесь к администратору! 
+            } else return -2; // Не найден tid, обратитесь к администратору! 
         }
     }
 }
