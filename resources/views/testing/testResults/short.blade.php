@@ -1,90 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Экзаменационный лист</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family: DejaVu Sans, sans-serif; }
-        .info {
-            text-align:center;
-        }
-        .info h3 {
-            padding: 0px;
-            margin: 2px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('css/CustomCSS/shortResult.css') }}">
+    <title>Document</title>
 </head>
 <body>
     <div style="width: 100%; max-width: 170mm; margin: auto">
-        <table width="100%">
-            <tr style="border-bottom: 1px solid #000000">
-                <td style="width: 125px;"><img src="{{ asset('images/logo.png') }}" style="width: 125px;"></td>
-                <td style="text-align: justify;">ГОУ ВПО ЛНР «ЛУГАНСКИЙ НАЦИОНАЛЬНЫЙ УНИВЕРСИТЕТ ИМЕНИ ТАРАСА ШЕВЧЕНКО»</td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 8px;text-align:center;" colspan="2">
-                    <strong>ЭКЗАМЕНАЦИОННЫЙ ЛИСТ</strong>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-bottom: 16px;text-align:center;" colspan="2">
-                    <strong>({{ strtoupper($event_name) }})</strong><br>
-                </td>
-            </tr>
-            <tr>
-                <td class="info" colspan="2">
-                    <h3>Фамилия: {{ $famil }}</h3>
-                </td>
-            </tr>
-            <tr>
-                <td class="info" colspan="2">
-                    <h3>Имя: {{ $name }}</h3>
-                </td>
-            </tr>
-            <tr>
-                <td class="info" colspan="2">
-                    <h3>Отчество: {{ $otch }}</h3>
-                </td>
-            </tr>
-            <tr>
-                <td class="info" colspan="2" >
-                    <h3 style="margin: 20px;">PIN: {{ $PIN }}</h3>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <table width="100%" cellpadding="0" cellspacing="0" border="1">
-                        <thead>
-                            <tr style="background-color: #eee">
-                                <th style="text-align: center; padding: 5px; width: 5%;">№</th>
-                                <th style="text-align: center; padding: 5px; width: 50%;">Предмет</strong></th>
-                                <th style="text-align: center; padding: 5px; width: 15%;">Дата</th>
-                                <th style="text-align: center; padding: 5px; width: 15%;">Время</th>
-                                <th style="text-align: center; padding: 5px; width: 15%;">Баллы</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($tests as $test)
-                                <tr>
-                                    <td style="text-align: center; padding: 5px;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center; padding: 5px;">{{ $test->discipline }}</td>
-                                    <td style="text-align: center; padding: 5px;">{{ date('d.m.Y', strtotime($test->start_time)) }}</td>
-                                    <td style="text-align: center; padding: 5px;">{{ date('H:i', strtotime($test->start_time)) }}</td>
-                                    <td style="text-align: right; padding: 5px;"></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td class="info" colspan="2">
-                    <br>
-                    Данный экзаменационный лист является пропуском для прохождения тестирования
-                </td>
-            </tr>
-        </table>
+        <header>
+            <h2 style="font-size: 18px;">ГОУ ВПО ЛНР Луганский национальный университет имени Тараса Шевченко</h2>
+            <h3>Результаты тестирования</h3>
+        </header>
+        <div class="content">
+            <table>
+                <tr>
+                    <td>
+                        Фамилия, имя, отчество:</td>
+                    <td>
+                        <b>{{ $fio }}</b>
+                    </td>
+                </tr>
+            </table>
+            @if ($test_type != 'Пробное тестирование')
+                <table>
+                    <tr>
+                        <td style="width: 50mm;">Специальность:</td>
+                        <td>
+                            <span id="Spec-span">{{ $minid }} {{ $spec }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50mm;">Форма обучения:</td>
+                        <td>
+                            <input type="text" Value="{{ $fo }}" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50mm;">Факультет, институт:</td>
+                        <td>
+                            <input type="text"  Value="{{ $facult }}" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50mm;">ОКУ:</td>
+                        <td>
+                            <input type="text" Value="{{ $stlevel }}" disabled/>
+                        </td>
+                    </tr>
+                </table>
+            @endif
+            <table>
+                <tr>
+                    <td>Наименование экзамена: </td>
+                    <td>
+                        <b>{{ $test_name }}</b>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td style="width: 170mm;">Ответил(а) на <b>{{ $countAnswer }}</b> вопросов из <b>{{ $countAllQuestion }}</b>:</td>
+                </tr>
+                <tr>
+                    <td>Правильных ответов: <b>{{ $countTrueAnswer }}</b></td>
+                </tr>
+                <tr>
+                    <td>Неправильных ответов: <b>{{ $countFalseAnswer }}</b></td>
+               </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>Получил(а) <b>{{ $correctBall }}</b> баллов из <b>{{ $maxBall }}</b> возможных. </td>
+                </tr>
+            </table>
+            <table>
+                <tr >
+                    <td style="width: 120mm;">С результатами тестирования согласен(на)</td>
+                    <td>
+                        <input type="text" disabled style="max-width: 50mm;"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>

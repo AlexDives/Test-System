@@ -1,4 +1,4 @@
-<table class="table">
+<div class="table-responsive"> <table class="table">
     <thead>
         <th>Наименование</th>
         <th>Начало мероприятия</th>
@@ -17,4 +17,5 @@
             @endforeach
         </tbody>
     </table>
+</div>
 </div>

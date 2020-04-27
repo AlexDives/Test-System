@@ -68,7 +68,11 @@ function saveTestInfo(tid) {
                     "hideMethod": "fadeOut"
                 }
                 if (data == -1) Command: toastr["error"]('Произошла ошибка при сохранении! Обратитесь к администратору.');
-                else Command: toastr["success"]("Сохранено");
+                else {
+                    Command: toastr["success"]("Сохранено");
+                    location.replace("/info?id=" + data);
+
+                }
             },
             error: function(msg) {
                 alert('Ошибка');
@@ -160,4 +164,36 @@ function tableSearch() {
         }
 
     }
+}
+
+function test_duplicate(id) {
+    $.ajax({
+        url: '/info/duplicate',
+        type: 'post',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: { tid: id },
+        success: function(data) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (data == -1) Command: toastr["error"]('Произошла ошибка при создании дубликата теста! Обратитесь к администратору.');
+            else Command: toastr["success"]("Дубликат теста успешно создан!");
+        },
+    });
 }

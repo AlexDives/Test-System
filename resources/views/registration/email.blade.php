@@ -71,7 +71,7 @@ a[x-apple-data-detectors] {
                   <td width="580" valign="top" align="center" style="padding:0;Margin:0;"> 
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="center" style="padding:0;Margin:0;font-size:0px;"><a href="{{ asset('/') }}" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="{{ asset('images/logo.png') }}" alt="Smart home logo" title="Smart home logo" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a></td> 
+                      <td align="center" style="padding:0;Margin:0;font-size:0px;"><a href="{{ asset('/') }}" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:14px;text-decoration:underline;color:#CCCCCC;"><img src="{{ asset('images/logo.png') }}" alt="Система тестировани" title="Система тестировани" width="109" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"></a></td> 
                      </tr> 
                    </table></td> 
                  </tr> 

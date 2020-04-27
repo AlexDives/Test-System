@@ -16,6 +16,17 @@ class AuthCheck
      */
     public function handle($request, Closure $next)
     {
+        $persCheck = DB::table('persons')->whereNotNull('secret_string')->get();
+        foreach ($persCheck as $pers) {
+            $timestampStart = strtotime($pers->date_crt);
+            $timestampEnd = time();
+            $correntHours = round((($timestampEnd - $timestampStart) / 60) / 60);
+            //if ($correntHours >= 24) DB::table('persons')->where('id', $pers->id)->update(['secret_string' => 'delete']);
+            if ($correntHours >= 24) DB::table('persons')->where('id', $pers->id)->delete();
+        }
+        
+
+
         if (!$request->session()->has('user_id')) {
             echo '<script>location.replace("/");</script>'; exit;
         } else {

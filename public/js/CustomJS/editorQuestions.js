@@ -15,7 +15,7 @@ var quillanswerFalse1 = new Quill('#answerFalse1', { modules: { toolbar: toolbar
 var quillanswerFalse2 = new Quill('#answerFalse2', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
 var quillanswerFalse3 = new Quill('#answerFalse3', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
 
-const maxQuestion = 60;
+const maxQuestion = 0;
 var currentQuestion = 0;
 var ballMass = [];
 
@@ -57,7 +57,7 @@ function ajaxQuestList(test_id) {
 }
 
 function loadQuestList(data) {
-    if (currentQuestion < maxQuestion) {
+    if ((currentQuestion < maxQuestion) || (maxQuestion == 0)) {
         data.forEach(element => {
             currentQuestion++;
             ballMass[element["id"]] = element["ball"];
@@ -85,7 +85,7 @@ function clearQuest() {
 }
 
 function newQuest() {
-    if (currentQuestion < maxQuestion) {
+    if ((currentQuestion < maxQuestion) || (maxQuestion == 0)) {
         currentQuestion++;
 
         $('.li').append('<div class="s-ask page-item "><a class="page-link item" href="#" onclick="selectedQuest(0, this);">' + currentQuestion + '</a></div>');

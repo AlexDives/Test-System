@@ -71,8 +71,6 @@ class personsCabinetController extends Controller
                 
             ];
         }
-        /*dump($persTests[1]);
-        dd($persTests);*/
 
         $pers = DB::table('persons')->where('id', session('user_id'))->where('is_block', 'F')->first();
         return view('persons.cabinet', [
@@ -233,15 +231,7 @@ class personsCabinetController extends Controller
                 'tests' => $tests
             ]
         );
-        /*return view('persons.pdfTemplate', [
-            'famil' => $pers->famil,
-            'name'  => $pers->name,
-            'otch'  => $pers->otch,
-            'PIN'   => $pers->PIN,
-            'event_name'    => $event->name,
-            'tests' => $tests
-        ]
-    );*/
+
         if ($request->status == 0) return $pdf->stream();
         else if ($request->status == 1) return $pdf->download('exam-sheet.pdf');
     }
@@ -252,7 +242,7 @@ class personsCabinetController extends Controller
         $text = $request->texta;
         $theme = $request->theme;
     
-        Mail::send('persons.ajax.requestEmail', ['text' => $text, 'fio' => $fio], function ($message) use ($pers, $theme) {
+        Mail::send('persons.ajax.requestEmail', ['text' => $text, 'fio' => $fio, 'email' => $pers->email], function ($message) use ($pers, $theme) {
             $message->from('asu@ltsu.org', $pers->email);
             $message->to('asu@ltsu.org', 'Тех. поддержка')->subject($theme);
         });

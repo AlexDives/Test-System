@@ -32,6 +32,9 @@
                                 <li class="slide">
                                     <a href="#" class="side-menu__item active" onclick="saveTestInfo({{ isset($test) ? $test[0]->id : 0 }});"><i class="side-menu__icon fa fa-floppy-o"></i><span class="side-menu__label">Сохранить</span></a>
                                 </li>
+                                <li class="slide">
+                                    <a href="#" class="side-menu__item" onclick="test_duplicate({{ isset($test) ? $test[0]->id : 0 }});"><i class="side-menu__icon fa fa-clone"></i><span class="side-menu__label">Дубликат теста</span></a>
+                                </li>
                             </ul>
                         </li>
                         @if (isset($test))
@@ -84,9 +87,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Дисциплина</label>
+                                            <label class="form-label">Направление подготовки</label>
                                             <input type="hidden" name="tid" id="tid" value="{{ isset($test) ? $test[0]->id : 0 }}">
-                                            <input type="text" class="form-control" name="discipline" id="discipline" placeholder="Дисциплина" value="{{ isset($test) ? $test[0]->discipline : '' }}">
+                                            <input type="text" class="form-control" name="discipline" id="discipline" placeholder="Направление подготовки" value="{{ isset($test) ? $test[0]->discipline : '' }}">
                                         </div>
                                         <div class='row mb-3'>
                                             <div class='col-md-6'>

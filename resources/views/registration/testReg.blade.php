@@ -37,7 +37,7 @@
 									</div> 
 									<div class='col-md-4 mb-2'>
 										<label class="form-label">Повторить пароль</label>
-										<input type="password" class="form-control" name="pass2" id="pass2" placeholder="" onkeyup="checkPass()">
+										<input type="password" class="form-control" name="pass2" id="pass2" placeholder="" onblur="checkPass()">
 									</div> 
 								</div>
 								<hr>
@@ -56,10 +56,10 @@
 												<label class="form-label">Отчество</label>
 												<input type="text" class="form-control" name="otch" id="otch" placeholder="" >
 											</div> 	
-											<div class='col-md-12 mb-2'>
+											<!--<div class='col-md-12 mb-2' style="display:none;">
 												<label class="form-label">Серия паспорта</label>
 												<input type="text" class="form-control" name="serp" id="serp" placeholder="" >
-											</div> 
+											</div>-->
 										</div>												
 									</div>										
 									<div class="col-md-6"> 
@@ -80,10 +80,10 @@
 												<label class="form-label">Email</label>
 												<input type="email" class="form-control" name="email" id="email" placeholder="" onkeyup="check_email()">
 											</div>
-											<div class='col-md-12 mb-2'>
+											<!--<div class='col-md-12 mb-2'  style="display:none;">
 												<label class="form-label">Номер паспорта</label>
 												<input type="text" class="form-control" name="nump" id="nump" placeholder="" >
-											</div> 
+											</div>-->
 										</div>												 
 									</div>										
 								</div>

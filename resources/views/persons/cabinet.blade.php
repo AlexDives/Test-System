@@ -63,7 +63,7 @@
                                 <div class='card-body'>
                                     <div class='row'>
                                         <div class='col-md-7'>
-                                            <div style='width:35mm;height:45mm;background:url("data:image/png;base64,{{ base64_encode($person->photo) }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
+                                            <div style='width:35mm;height:45mm;background:url("{{ $person->photo_url }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
                                             <div class="form-group" style='float:left'>
                                                 <div>
                                                     <input type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
@@ -81,6 +81,9 @@
                                                 <h1>PIN {{ $person->PIN }}</h1>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row" style="justify-content: center;">
+                                        <button type="button" class="btn btn-info" onclick="showEvents();">Мероприятия</button>
                                     </div>
                                 </div>			 				 
                             </div>
@@ -155,12 +158,12 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
+    <script src="{{ asset('/js/script.js') }}"></script>
     <script>
         function selectedEvent(data)
         {
             let form = document.createElement('form');
             form.action = '/persons/regevent';
-            form.target = '_blank';
             form.method = 'POST';
             form.innerHTML = '<input name="eid" value="' + data + '">{{ csrf_field() }}';
 
@@ -195,6 +198,7 @@
             let form = document.createElement('form');
             form.action = '/persons/createPdf';
             form.method = 'POST';
+            form.target = '_blank';
             form.innerHTML = '<input name="peid" value="' + peid + '"><input name="status" value="' + status + '">{{ csrf_field() }}';
             // перед отправкой формы, её нужно вставить в документ
             document.body.append(form);
@@ -250,8 +254,8 @@
                         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        if (data == -1) Swal.fire('Сообщенеи НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
-                        else Swal.fire('Сообщенеи отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'confirm');
+                        if (data == -1) Swal.fire('Сообщение НЕ отправлено!', 'По техническим причинам, сообщение не было отправлено. Напишите письмо на E-mail: asu@ltsu.org', 'error');
+                        else Swal.fire('Сообщение отправлено!', 'Ожидайте ответ на свой E-mail адрес.', 'success');
                     }
                 });
             }

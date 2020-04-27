@@ -135,9 +135,9 @@ function popupShow() {
         reverseButtons: false
 
     }).then((result) => {
-        if (result.value) {
-            window.location.href = "/"
-        }
+        //if (result.value) {
+        window.location.href = "/";
+        //}
     })
 }
 

@@ -262,6 +262,23 @@ function confirmResponse() {
     });
 }
 
+function st() {
+    $.ajax({
+        url: '/test/speedTest',
+        type: 'POST',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: { tid: tid, qid: qid, ansid: selectedAnswerId, ptid: ptid },
+        success: function(data) {
+            endTest(0);
+        },
+        error: function(msg) {
+            alert('Ошибка');
+        }
+    });
+}
+
 function time_left() {
     $.ajax({
         url: '/test/timeLeft',

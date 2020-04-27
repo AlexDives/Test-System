@@ -54,7 +54,7 @@
                         </li>							 
                     </ul>
                 </div>
-                <div class='btn-back' style='position: fixed'>
+                <div class='btn-back'>
                     <a href="{{ url("/editor") }}" class="side-menu__item"><i class="side-menu__icon fa fa-angle-left"></i><span class="side-menu__label">Назад</span></a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                         <div class='card-body'>
                             <div class='row'>
                                 <div class='col-md-8'>
-                                    <label class="form-label">Дисциплина</label>
+                                    <label class="form-label">Направление подготовки</label>
                                     <label class="form-control">{{ $test_name }}</label>
                                 </div>
                                 <div class='col-md-4'>

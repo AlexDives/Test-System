@@ -49,7 +49,7 @@
 					}
 					else if (role_id == 3) 
 					{
-						location.replace("/testing");
+						location.replace("/pers/list");
 					}
 					else if (role_id == 4) 
 					{

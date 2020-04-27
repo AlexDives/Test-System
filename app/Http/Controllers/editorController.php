@@ -31,7 +31,9 @@ class editorController extends Controller
                     'users.name',
                     'users.otch'
                 )
+                ->orderBy('id', "desc")
                 ->get();
+            $countTest = DB::table('tests')->count();
         } else {
             $tests = DB::table('tests')->distinct()
                 ->leftJoin('users', 'users.id', '=', 'tests.user_id')
@@ -49,20 +51,41 @@ class editorController extends Controller
                 ->where('test_editors.user_id', session('user_id'))
                 ->where('status', 1)
                 ->get();
+            $countTest = DB::table('tests')->distinct()
+                ->leftJoin('users', 'users.id', '=', 'tests.user_id')
+                ->leftJoin('target_audience', 'target_audience.id', '=', 'tests.targetAudience_id')
+                ->leftJoin('type_test', 'type_test.id', '=', 'tests.type_id')
+                ->leftJoin('test_editors', 'test_editors.test_id', '=', 'tests.id')
+                ->where('test_editors.user_id', session('user_id'))
+                ->where('status', 1)
+                ->count();
         }
 
+        $success = [];
         foreach ($tests as $test) {
-            $testScatter += [$test->id => DB::table('test_scatter')
-                ->where('test_id', $test->id)
-                ->orderBy('ball', 'asc')
-                ->get()];
+            $tc = DB::table('test_scatter')
+                    ->where('test_id', $test->id)
+                    ->orderBy('ball', 'asc')
+                    ->get();
+            $testScatter += [$test->id => $tc];
+            
+            if ($tc == null) $success += [$test->id => 'false'];
+            foreach ($tc as $tmp)
+            {
+                $ttmp = DB::table('questions')->where('test_id', $test->id)->where('ball', $tmp->ball)->count();
+
+                if ($tmp->ball_count <= $ttmp) $success += [$test->id => 'true'];
+                else $success += [$test->id => 'false'];
+            }
         }
  
         return view('editor.main', [
             'role_id'       => session('role_id'),
             'user_id'       => session('user_id'),
             'tests'         => $tests,
-            'testScatter'   => $testScatter
+            'testScatter'   => $testScatter,
+            'testCount'     => $countTest,
+            'successTest' => $success
         ]);
     }
 
@@ -145,7 +168,7 @@ class editorController extends Controller
         } else if ($request->tid > 0) {
             DB::table('tests')->where('id', $request->tid)->update(
                 [
-                    'user_id' => session('user_id'), 'targetAudience_id' => $targetAudience, 'type_id' => $typeTest,
+                    'targetAudience_id' => $targetAudience, 'type_id' => $typeTest,
                     'discipline' => $discipline, 'validator' => $validator, 'min_ball' => $min_ball,
                     'max_ball' => $max_ball,  'test_time' => $test_time, 'count_question' => $count_question
                 ]
@@ -262,6 +285,7 @@ class editorController extends Controller
                         'users.otch'
                     )
                     ->where('tests.discipline', 'like', '%' . $request->searchTestText . '%')
+                    ->orderBy('id', "desc")
                     ->get();
             } else {
                 $tests = DB::table('tests')->distinct()
@@ -297,6 +321,7 @@ class editorController extends Controller
                         'users.name',
                         'users.otch'
                     )
+                    ->orderBy('id', "desc")
                     ->get();
             } else {
                 $tests = DB::table('tests')->distinct()
@@ -317,14 +342,34 @@ class editorController extends Controller
                     ->get();
             }
         }
-        foreach ($tests as $test) {
-            $testScatter += [$test->id => DB::table('test_scatter')
-                ->where('test_id', $test->id)
-                ->orderBy('ball', 'asc')
-                ->get()];
-        }
+        $success = [];
         
-        return view('editor.ajax.testList', ['tests' => $tests, 'testScatter'   => $testScatter]);
+        foreach ($tests as $test) {
+            $max_ball = 0;
+            $max_quest = 0;
+            $tc = DB::table('test_scatter')
+                    ->where('test_id', $test->id)
+                    ->orderBy('ball', 'asc')
+                    ->get();
+            $testScatter += [$test->id => $tc]; // добавить проверку на макс балл и количество отображаемых вопросов
+
+            $testScatter_success = 'true';
+            if (count($tc) == 0) $testScatter_success = 'false';
+            
+            foreach ($tc as $tmp)
+            {
+                $max_ball += $tmp->ball_count * $tmp->ball;
+                $max_quest += $tmp->ball_count;
+
+                $ttmp = DB::table('questions')->where('test_id', $test->id)->where('ball', $tmp->ball)->count();
+                if ($tmp->ball_count <= $ttmp) $testScatter_success= 'true';
+                else $testScatter_success = 'false';
+            }
+            if ($max_ball != $test->max_ball) $testScatter_success = 'false';
+            if ($max_quest != $test->count_question) $testScatter_success = 'false';
+            $success += [$test->id => $testScatter_success];
+        }
+        return view('editor.ajax.testList', ['tests' => $tests, 'testScatter'   => $testScatter, 'successTest' => $success, 'role_id' => session('role_id')]);
     }
 
     public function questions(Request $request)
@@ -437,7 +482,7 @@ class editorController extends Controller
     {
         $data = DB::table('questions')
             ->where('test_id', $request->tid)
-            ->orderBy('id', 'asc')
+            ->orderBy('ball', 'asc')
             ->get();
         return $data;
     }
@@ -568,5 +613,73 @@ class editorController extends Controller
                 ['quest_id' => $qid, 'text' => 'нет', 'type' => 'dis3']
             );
         }
+    }
+
+    public function duplicate(Request $request)
+    {
+        $tid = $request->tid;
+        if ($tid > 0)
+        {
+            $testMain   = DB::table('tests')->where('id', $tid)->first();
+            $tid_new    = DB::table('tests')->insertGetId(
+                            [
+                                'user_id'           => $testMain->user_id,
+                                'targetAudience_id' => $testMain->targetAudience_id,
+                                'type_id'           => $testMain->type_id,
+                                'discipline'        => $testMain->discipline.' - копия от '.date('d.m.Y H:i:s', time()),
+                                'validator'         => $testMain->validator,
+                                'max_ball'          => $testMain->max_ball,
+                                'min_ball'          => $testMain->min_ball,
+                                'test_time'         => $testMain->test_time,
+                                'count_question'    => $testMain->count_question,
+                                'status'            => $testMain->status
+                            ]
+                          );
+            $testMain_scatter = DB::table('test_scatter')->where('test_id', $tid)->get();
+            foreach ($testMain_scatter as $tms) {
+                DB::table('test_scatter')->insert(
+                    [
+                        'test_id'   => $tid_new,
+                        'ball'      => $tms->ball,
+                        'ball_count'=> $tms->ball_count
+                    ]
+                );
+            }
+
+            $testMain_editors = DB::table('test_editors')->where('test_id', $tid)->get();
+            foreach ($testMain_editors as $tme) {
+                DB::table('test_editors')->insert(
+                    [
+                        'test_id'   => $tid_new,
+                        'user_id'   => $tme->user_id,
+                        'is_owner'  => $tme->is_owner
+                    ]
+                );
+            }
+
+            $testMain_questions = DB::table('questions')->where('test_id', $tid)->get();
+            foreach ($testMain_questions as $tmq) {
+                $qid = DB::table('questions')->insertGetId(
+                    [
+                        'test_id'   => $tid_new,
+                        'ball'   => $tmq->ball
+                    ]);
+
+                $testMain_questions_details = DB::table('question_details')->where('quest_id', $tmq->id)->get();
+                foreach ($testMain_questions_details as $tmqd)
+                {
+                    DB::table('question_details')->insert([ 'quest_id' => $qid, 'text' => $tmqd->text, 'type' => $tmqd->type ]);
+                }
+            }
+            return 0;
+        }
+        else return -1;
+    }
+
+    public function fulldeletetest(Request $request)
+    {
+        $tid = $request->tid;
+        DB::table('tests')->where('id', $tid)->delete();
+        return 0;
     }
 }

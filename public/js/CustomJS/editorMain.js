@@ -14,6 +14,42 @@ function searchTest() {
             if (firstLoad) firstLoad = false;
             else {
                 toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    //Command: toastr["success"]("Обновлено");
+            }
+        }
+    });
+}
+
+function refreshTest() {
+    $.ajax({
+        url: '/editor/search',
+        type: 'POST',
+
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: $('#search').serialize(),
+        success: function(html) {
+            $('#testListAjax').html(html);
+            if (firstLoad) firstLoad = false;
+            else {
+                toastr.options = {
                     "closeButton": false,
                     "debug": false,
                     "newestOnTop": false,
@@ -34,18 +70,17 @@ function searchTest() {
             }
         }
     });
-
 }
-searchTest();
-setInterval(searchTest, 60000);
+refreshTest();
+setInterval(refreshTest, 60000);
 
 function supportPopup() {
     Swal.fire({
         title: 'Связь с отделом программирования',
         showCloseButton: false,
-        html: '<div class="row">' +
-            '<div class="col-md-12 mb-2"><b>Тема:</b></div>' +
-            '<div class="col-md-12 mb-2"><input type="text" class="form-control" name="theme" id="theme"></div>' +
+        html: '<div class="row" >' +
+            '<div class="col-md-12 mb-2" style="display:flex; flex-direction:row; justify-content:center; align-items:center;"><b>Чрезвычайно важное:</b><input type="checkbox" class="form-control" name="important" id="important" style="width:20px; margin-left:7px;"></div>' +
+            '<div class="col-md-12 mb-2"><input type="text" class="form-control" name="theme" id="theme" value="test.ltsu.org" style="display:none;"></div>' +
             '</div>' +
             '<div class="row">' +
             '<div class="col-md-12 mb-2"><b>Сообщение:</b></div>' +
@@ -63,6 +98,7 @@ function supportPopup() {
 function sendReuqest() {
     var them = $("#theme").val();
     var txt = $("#texta").val();
+    var important = $("#important").val();
 
     $.ajax({
         url: '/speedrequest',
@@ -72,7 +108,8 @@ function sendReuqest() {
         },
         data: {
             theme: them,
-            text: txt
+            text: txt,
+            important: important
         },
         success: function(data) {
             toastr.options = {
@@ -93,8 +130,24 @@ function sendReuqest() {
                 "hideMethod": "fadeOut"
             }
 
-            if (data == 0) Command: toastr["success"]('Запрос отправлен!');
+            if (data == 'true') Command: toastr["success"]('Запрос отправлен!');
             else Command: toastr["error"]('Ошибка при отправке запроса!');
+        }
+    });
+}
+
+function full_delete_test(tid) {
+    $.ajax({
+        url: '/editor/fulldeletetest',
+        type: 'POST',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            tid: tid
+        },
+        success: function(data) {
+            refreshTest();
         }
     });
 }

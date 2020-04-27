@@ -23,6 +23,8 @@ class requestController extends Controller
         $tel_num = $user->tel_num;
         $theme = $request->theme;
         $text = $request->text;
+        $important = $request->important == 'on' ? 'T' : 'F';
+
         
         $data = array(
             'famil' => $famil, 
@@ -33,14 +35,15 @@ class requestController extends Controller
             'aud_num' => $aud_num, 
             'tel_num' => $tel_num, 
             'theme' => $theme, 
-            'text' => $text
+            'text' => $text,
+            'important' => $important
         );
         $client = new Client([
             // You can set any number of default request options.
             'timeout'  => 3.0,
             'headers' => array('Content-Type'  => 'application/json'),
         ]);
-        $res = $client->request('GET', 'https://cont.ltsu.org/SpeedRequest', [
+        $res = $client->request('POST', 'http://request.ltsu.org/api/SpeedRequest', [
             'body' => json_encode($data)]);
 
         $body = $res->getBody();

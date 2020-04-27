@@ -34,7 +34,7 @@
                             <a href="" class="side-menu__item"><i class="side-menu__icon  fa fa-repeat"></i><span class="side-menu__label">Обновить</span></a>
                         </li>
                         <li class="slide show_report" style="display: none;">
-                            <a href="#" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
+                            <a href="#" class="side-menu__item" onclick="shortResult();"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
                         </li>
                         @if ($role == 1 || $role == 2 || $role == 3)
                             <li class="slide show_report" style="display: none;">
@@ -68,7 +68,7 @@
                                 <div class='card-body'>
                                     <div class='row'>
                                         <div class='col-md-7'>
-                                            <div style='width:35mm;height:45mm;background:url("data:image/png;base64,{{ base64_encode($person->photo) }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
+                                            <div style='width:35mm;height:45mm;background:url("{{ $person->photo_url }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
                                             <div class="form-group" style='float:left'>
                                                 <div>
                                                     <input type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
@@ -145,6 +145,11 @@
             {
                 window.location.replace('/test/start?ptid='+testPersId);
             }
+        }
+
+        function shortResult()
+        {
+            window.open('/test/result/short?ptid='+testPersId, '_blank');
         }
     </script>
 @endsection
