@@ -28,7 +28,7 @@
                 <div class="tab-pane active" id="index1">
                     <ul class="side-menu toggle-menu">
                         <li class="slide show_report">
-                            <a href="#" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
+                            <a href="#" onclick="shortResult();" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
                         </li>
                         @if ($role == 1 || $role == 2 || $role == 3)
                             <li class="slide show_report">
@@ -151,7 +151,10 @@
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
     <script>
-
+        function shortResult()
+        {
+            window.open('/test/result/short?ptid={{ $ptid }}', '_blank');
+        }
     </script>
 @endsection
 

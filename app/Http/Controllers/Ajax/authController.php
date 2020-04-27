@@ -39,18 +39,21 @@ class authController extends Controller
         }
         else 
         {
-            $persons = DB::table('persons')->where(['login' => $login])->whereNull('secret_string')->first();
+            $persons = DB::table('persons')->where(['login' => $login])->first();
             if ($persons != null)
             {
-                if (Hash::check($pass, $persons->password)) {
-                    if ($persons->is_block == 'F') {
-                        session(['user_id' => $persons->id, 'role_id' => 5]);
-                        $data = ['role_id' => 5];
-                        return $data;
+                if ($persons->secret_string == null) {
+                    if (Hash::check($pass, $persons->password)) {
+                        if ($persons->is_block == 'F') {
+                            session(['user_id' => $persons->id, 'role_id' => 5]);
+                            $data = ['role_id' => 5];
+                            return $data;
+                        }
+                        else return -1;
                     }
-                    else return -1;
+                    else return -2;
                 }
-                else return -2;
+                else return -4;
             }
             else return -3;
         }

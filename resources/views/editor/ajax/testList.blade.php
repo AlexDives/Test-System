@@ -1,14 +1,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 <script src="{{ asset('/js/script.js') }}"></script>
 <ul class="open-list accordionjs m-0" data-active-index="false">
-    @foreach ($tests as $test)
+    @foreach ($tests as $test) 
         <li class="acc_section" onclick="$('#changedTest').attr('href', '{{ url('/info') }}?id=' + {{ $test->id }}); $('#slideEdit').css('display', '');">
-            <div class="acc_head" @IF($test->status == 2) style="background: tomato; color:#fff" @ENDIF>
+            <div class="acc_head" @if(isset($successTest[$test->id])) 
+                                    @if($successTest[$test->id] == 'true') 
+                                        @IF($test->status == 2) 
+                                            style="background: tomato; color:#fff" 
+                                        @else 
+                                            style="background: lightgreen;" 
+                                        @ENDIF 
+                                    @ELSE 
+                                        @IF($test->status == 2) 
+                                            style="background: tomato; color:#fff" 
+                                        @ENDIF 
+                                    @ENDIF
+                                  @ENDIF>
                 <h3>														
                     <div class='row'>
-                        <div class='col-md-1 col-2'>{{ $loop->iteration }}</div>
+                        <div class='col-md-1 col-2'>{{ $loop->iteration }} @if($role_id == 1) ({{ $test->id }}) @endif</div>
                         <div class='col-md-4 col-5'>{{ $test->discipline }}</div>
-                        <div class='col-md-4 col-5'>{{ $test->targetAudienceName }}</div>
+                        <div class='col-md-2 col-5'>{{ $test->targetAudienceName }}</div>
+                        <div class='col-md-2 col-5'>{{ $test->typeTestName }}</div>
                         <div class='col-md-3 m-h'>{{ date('d.m.Y', strtotime($test->date_crt))}}</div>
                     </div>
                 </h3>

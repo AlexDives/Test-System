@@ -29,6 +29,7 @@ class regTestsController extends Controller
 
     function registration(Request $request)
     {
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) return -2;
         // ваш секретный ключ
         $secret = '6LfwCtUUAAAAAJiz-peMncLSTkbHBLAPqyxomlF5';
 
@@ -68,13 +69,17 @@ class regTestsController extends Controller
                     'otch'          => $otch,
                     'birthday'      => $birthday,
                     'gender'        => $gender,
-                    'pasp_ser'      => $serp,
-                    'pasp_num'      => $nump,
+                    
                     'PIN'           => $pin,
                     'secret_string' => $secret_string
                 ]
             );
-            $verificate_link = env('APP_URL').'/verificate?v='.$secret_string.'&email='.$email;
+            /*
+            'pasp_ser'      => $serp,
+                    'pasp_num'      => $nump,
+            */
+
+            $verificate_link = 'http://test.ltsu.org/verificate?v='.$secret_string.'&email='.$email;
             Mail::send('registration.email', ['link' => $verificate_link, 'fio' => $fio], function ($message) use ($request) {
                 $message->from('asu@ltsu.org', 'ЛНУ имени Тараса Шевченко');
                 $message->to($request->email, $request->famil.' '.$request->name.' '.$request->otch)->subject('Регистрация аккаунта на test.ltsu.org');
@@ -96,5 +101,15 @@ class regTestsController extends Controller
             }
         }
         echo '<script>location.replace("/");</script>';
+    }
+    function resetPassword(Request $request)
+    {
+        $pers = DB::table('persons')->where('login', $request->login)->first();
+        if ($pers != null)
+        {
+            DB::table('persons')->where('id', $pers->id)->update(['password' => Hash::make($request->pass)]);
+            echo "OK!";
+        }
+        else echo "NO OK!!!!";
     }
 }

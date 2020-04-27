@@ -15,9 +15,11 @@
 	</head>
 
 	<body class="app sidebar-mini rtl">
-		<div id="global-loader">
-			<img src="{{ asset('images/loader.svg') }}" alt="loader">
-		</div>
+		@if(Route::currentRouteName() != 'admin.statistic')
+			<div id="global-loader">
+				<img src="{{ asset('images/loader.svg') }}" alt="loader">
+			</div>
+		@endif
 		<div class="page">
 			<div class="page-main">
 				@yield('header')

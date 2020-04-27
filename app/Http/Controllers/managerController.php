@@ -53,7 +53,7 @@ class managerController extends Controller
         return DB::table('users')
             ->leftJoin('user_roles', 'user_roles.user_id', '=', 'users.id')
             ->leftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
-            ->select('users.*', 'roles.id as role_id')->get();
+            ->select('users.*', 'roles.id as role_id')->orderby("users.last_active", "desc")->get();
     }
 
     public function saveUser(Request $request)

@@ -5,9 +5,9 @@
 		<div class="container-fluid">
 			<div class="d-flex">
 			    <a class="header-brand" href="/" style="width:100%;text-align:center">
-					<img src="images/logo.png" class="header-brand-img main-logo" alt="Hogo logo">
-					<img src="images/logo.png" class="header-brand-img icon-logo" alt="Hogo logo">
-					<span class='logo-name'>Регистрация на пробное тестирование</span>
+					<img src="{{ asset('images/logo.png') }}" class="header-brand-img main-logo" alt="Hogo logo">
+					<img src="{{ asset('images/logo.png') }}" class="header-brand-img icon-logo" alt="Hogo logo">
+					<span class='logo-name'>Регистрация</span>
 				</a>
 				<div class="d-flex order-lg-2 ml-auto header-rightmenu"></div>
 			</div>
@@ -33,11 +33,11 @@
 									</div> 
 									<div class='col-md-4 mb-2'>
 										<label class="form-label">Пароль</label>
-										<input type="password" class="form-control" name="pass" id="pass" placeholder="" onkeyup="checkPass()">
+										<input type="password" class="form-control" name="pass" id="pass" placeholder="">
 									</div> 
 									<div class='col-md-4 mb-2'>
 										<label class="form-label">Повторить пароль</label>
-										<input type="password" class="form-control" name="pass2" id="pass2" placeholder="" onkeyup="checkPass()">
+										<input type="password" class="form-control" name="pass2" id="pass2" placeholder="" onblur="checkPass()">
 									</div> 
 								</div>
 								<hr>
@@ -56,10 +56,10 @@
 												<label class="form-label">Отчество</label>
 												<input type="text" class="form-control" name="otch" id="otch" placeholder="" >
 											</div> 	
-											<div class='col-md-12 mb-2'>
+											<!--<div class='col-md-12 mb-2' style="display:none;">
 												<label class="form-label">Серия паспорта</label>
 												<input type="text" class="form-control" name="serp" id="serp" placeholder="" >
-											</div> 
+											</div>-->
 										</div>												
 									</div>										
 									<div class="col-md-6"> 
@@ -80,10 +80,10 @@
 												<label class="form-label">Email</label>
 												<input type="email" class="form-control" name="email" id="email" placeholder="" onkeyup="check_email()">
 											</div>
-											<div class='col-md-12 mb-2'>
+											<!--<div class='col-md-12 mb-2'  style="display:none;">
 												<label class="form-label">Номер паспорта</label>
 												<input type="text" class="form-control" name="nump" id="nump" placeholder="" >
-											</div> 
+											</div>-->
 										</div>												 
 									</div>										
 								</div>

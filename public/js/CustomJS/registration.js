@@ -109,6 +109,9 @@ $(document).on('click', '#reg', function(e) {
                     else if (data == 1) {
                         errorMsg("Проверка на робота не пройдена, повторите попытку!");
                         grecaptcha.reset();
+                    } else if (data == -2) {
+                        errorMsg("Не верный формат E-mail.");
+                        blockedEmail = true;
                     }
 
                 }
