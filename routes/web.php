@@ -14,11 +14,8 @@ Route::get('/verificate', 'Ajax\regTestsController@verificate');
 
 Route::middleware('authCheck')->group(function () {
     Route::get('/admin', 'adminController@main');
-<<<<<<< HEAD
     Route::get('/admin/statistic', 'adminController@statistic')->name('admin.statistic');
     Route::post('/admin/statistic/get', 'adminController@load_statisctic');
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     Route::post('/admin/sendAllMail', 'adminController@sendAllMail');
 
 
@@ -28,10 +25,7 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/editor/search', 'editorController@searchTest');
 
     Route::get('/info', 'editorController@info');
-<<<<<<< HEAD
     Route::post('/info/duplicate', 'editorController@duplicate');
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     Route::post('/info/save', 'editorController@saveTestInfo');
     Route::get('/info/new', 'editorController@newTest');
     Route::get('/info/delete', 'editorController@deleteTest');
@@ -72,17 +66,9 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/test/timeLeft', 'testController@timeLeft');
     Route::get('/test/result', 'testController@result');
 
-<<<<<<< HEAD
     Route::get('/test/result/short','testResultController@short');
-=======
-    
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     Route::get('/test/result/full','testResultController@full');
 
     Route::get('/reset_pwd', 'Ajax\regTestsController@resetPassword');
 
 });
-<<<<<<< HEAD
-=======
-Route::get('/test/result/short','testResultController@short');
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c

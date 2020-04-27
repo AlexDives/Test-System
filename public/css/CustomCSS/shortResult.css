@@ -38,13 +38,10 @@ header h3 {
     font-weight: bold;
     font-style: italic;
     font-size: 12px;
-<<<<<<< HEAD
 }
 
 .content table tr td>#Spec-span {
     border-bottom: 1px solid black;
     display: inline-block;
     width: 100%;
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 }

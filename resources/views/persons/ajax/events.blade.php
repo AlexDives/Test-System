@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 <div class="table-responsive"> <table class="table">
-=======
-<table class="table">
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
     <thead>
         <th>Наименование</th>
         <th>Начало мероприятия</th>
@@ -21,8 +17,5 @@
             @endforeach
         </tbody>
     </table>
-<<<<<<< HEAD
 </div>
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 </div>

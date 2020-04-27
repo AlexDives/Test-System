@@ -28,7 +28,6 @@
                 <div class="tab-pane active" id="index1">
                     <ul class="side-menu toggle-menu">
                         <li class="slide">
-<<<<<<< HEAD
                             <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMail();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Рассылка на E-mail</span></a>
                         </li>	
                         <li class="slide">
@@ -38,8 +37,6 @@
                             <a href="#" class="side-menu__item" ></a>
                         </li>	
                         <li class="slide">
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                             <a href="{{ url("/editor") }}" class="side-menu__item" id="newTest"><i class="side-menu__icon fa fa-file-o"></i><span class="side-menu__label">Список тестов</span></a>
                         </li>
                         <li class="slide">
@@ -55,13 +52,7 @@
                                 <a href="{{ url("/pers/list") }}" class="side-menu__item"><i class="side-menu__icon  fa fa-pencil-square-o"></i><span class="side-menu__label">Перейти в "Тестирование"</span></a>
                             </li>
                         @endif		
-<<<<<<< HEAD
                         				 
-=======
-                        <li class="slide">
-                            <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMail();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Рассылка на E-mail</span></a>
-                        </li>					 
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
                     </ul>
                 </div>
                 <div class='btn-back'>
@@ -77,11 +68,7 @@
     <div class="side-app">
         <div class="page-header">
             <ol class="breadcrumb">
-<<<<<<< HEAD
                 <li class="breadcrumb-item"><a href="#">Список зарегистрировашихся</a></li>
-=======
-                <li class="breadcrumb-item"><a href="#">Админ панель</a></li>
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
             </ol>							
         </div>
         <div class='row'>

@@ -262,7 +262,6 @@ function confirmResponse() {
     });
 }
 
-<<<<<<< HEAD
 function st() {
     $.ajax({
         url: '/test/speedTest',
@@ -280,8 +279,6 @@ function st() {
     });
 }
 
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 function time_left() {
     $.ajax({
         url: '/test/timeLeft',

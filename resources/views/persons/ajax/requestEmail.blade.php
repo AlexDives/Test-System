@@ -63,14 +63,11 @@ a[x-apple-data-detectors] {
         ФИО: {{$fio}}
       </td> 
      </tr>
-<<<<<<< HEAD
      <tr style="border-collapse:collapse;"> 
       <td> 
         E-mail: {{$email}}
       </td> 
      </tr>
-=======
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
      <tr style="border-collapse:collapse;">
       <td> 
         Сообщение: {{$text}}

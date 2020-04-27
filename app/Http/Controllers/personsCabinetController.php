@@ -71,11 +71,6 @@ class personsCabinetController extends Controller
                 
             ];
         }
-<<<<<<< HEAD
-=======
-        /*dump($persTests[1]);
-        dd($persTests);*/
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
 
         $pers = DB::table('persons')->where('id', session('user_id'))->where('is_block', 'F')->first();
         return view('persons.cabinet', [
@@ -236,19 +231,7 @@ class personsCabinetController extends Controller
                 'tests' => $tests
             ]
         );
-<<<<<<< HEAD
 
-=======
-        /*return view('persons.pdfTemplate', [
-            'famil' => $pers->famil,
-            'name'  => $pers->name,
-            'otch'  => $pers->otch,
-            'PIN'   => $pers->PIN,
-            'event_name'    => $event->name,
-            'tests' => $tests
-        ]
-    );*/
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
         if ($request->status == 0) return $pdf->stream();
         else if ($request->status == 1) return $pdf->download('exam-sheet.pdf');
     }
@@ -259,11 +242,7 @@ class personsCabinetController extends Controller
         $text = $request->texta;
         $theme = $request->theme;
     
-<<<<<<< HEAD
         Mail::send('persons.ajax.requestEmail', ['text' => $text, 'fio' => $fio, 'email' => $pers->email], function ($message) use ($pers, $theme) {
-=======
-        Mail::send('persons.ajax.requestEmail', ['text' => $text, 'fio' => $fio], function ($message) use ($pers, $theme) {
->>>>>>> af6d712a7431e3b4be6cbde0e50d93227f613f2c
             $message->from('asu@ltsu.org', $pers->email);
             $message->to('asu@ltsu.org', 'Тех. поддержка')->subject($theme);
         });
