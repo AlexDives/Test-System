@@ -10,8 +10,6 @@ Route::post('/Check_login', 'Ajax\regTestsController@check_login');
 Route::post('/Check_email', 'Ajax\regTestsController@check_email');
 Route::get('/verificate', 'Ajax\regTestsController@verificate');
 
-
-
 Route::middleware('authCheck')->group(function () {
     Route::get('/admin', 'adminController@main');
     Route::get('/admin/statistic', 'adminController@statistic')->name('admin.statistic');
@@ -23,6 +21,7 @@ Route::middleware('authCheck')->group(function () {
 
     Route::post('/speedrequest', 'Ajax\requestController@req');
     Route::post('/editor/search', 'editorController@searchTest');
+    Route::post('/editor/fulldeletetest', 'editorController@fulldeletetest');
 
     Route::get('/info', 'editorController@info');
     Route::post('/info/duplicate', 'editorController@duplicate');
@@ -49,6 +48,7 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/statistic/refresh', 'statisticController@loadStats');
 
     Route::get('/pers/list', 'persController@persList');
+    Route::post('/pers/list/search', 'persController@searchPers');
     Route::post('/pers/check', 'persController@persCheck');
     Route::get('/pers/cabinet', 'persController@persCabinet');
 

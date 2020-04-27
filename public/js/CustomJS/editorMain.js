@@ -135,3 +135,19 @@ function sendReuqest() {
         }
     });
 }
+
+function full_delete_test(tid) {
+    $.ajax({
+        url: '/editor/fulldeletetest',
+        type: 'POST',
+        headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            tid: tid
+        },
+        success: function(data) {
+            refreshTest();
+        }
+    });
+}

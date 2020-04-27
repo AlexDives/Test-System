@@ -343,23 +343,32 @@ class editorController extends Controller
             }
         }
         $success = [];
+        
         foreach ($tests as $test) {
+            $max_ball = 0;
+            $max_quest = 0;
             $tc = DB::table('test_scatter')
                     ->where('test_id', $test->id)
                     ->orderBy('ball', 'asc')
                     ->get();
-            $testScatter += [$test->id => $tc];
+            $testScatter += [$test->id => $tc]; // добавить проверку на макс балл и количество отображаемых вопросов
+
+            $testScatter_success = 'true';
+            if (count($tc) == 0) $testScatter_success = 'false';
             
-            if (count($tc) == 0) $success += [$test->id => 'false'];
             foreach ($tc as $tmp)
             {
-                $ttmp = DB::table('questions')->where('test_id', $test->id)->where('ball', $tmp->ball)->count();
+                $max_ball += $tmp->ball_count * $tmp->ball;
+                $max_quest += $tmp->ball_count;
 
-                if ($tmp->ball_count <= $ttmp) $success += [$test->id => 'true'];
-                else $success += [$test->id => 'false'];
+                $ttmp = DB::table('questions')->where('test_id', $test->id)->where('ball', $tmp->ball)->count();
+                if ($tmp->ball_count <= $ttmp) $testScatter_success= 'true';
+                else $testScatter_success = 'false';
             }
+            if ($max_ball != $test->max_ball) $testScatter_success = 'false';
+            if ($max_quest != $test->count_question) $testScatter_success = 'false';
+            $success += [$test->id => $testScatter_success];
         }
-        
         return view('editor.ajax.testList', ['tests' => $tests, 'testScatter'   => $testScatter, 'successTest' => $success, 'role_id' => session('role_id')]);
     }
 
@@ -473,7 +482,7 @@ class editorController extends Controller
     {
         $data = DB::table('questions')
             ->where('test_id', $request->tid)
-            ->orderBy('id', 'asc')
+            ->orderBy('ball', 'asc')
             ->get();
         return $data;
     }
@@ -665,5 +674,12 @@ class editorController extends Controller
             return 0;
         }
         else return -1;
+    }
+
+    public function fulldeletetest(Request $request)
+    {
+        $tid = $request->tid;
+        DB::table('tests')->where('id', $tid)->delete();
+        return 0;
     }
 }

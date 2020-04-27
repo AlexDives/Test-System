@@ -39,9 +39,6 @@
                         <li class="slide">
                             <a href="{{ url("/editor") }}" class="side-menu__item" id="newTest"><i class="side-menu__icon fa fa-file-o"></i><span class="side-menu__label">Список тестов</span></a>
                         </li>
-                        <li class="slide">
-                            <a href="#" class="side-menu__item" id="refreshList" onclick="searchTest();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Обновить</span></a>
-                        </li>
                         @if ($role == 1)
                             <li class="slide">
                                 <a href="{{ url("/manager") }}" class="side-menu__item"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Менеджер пользователей</span></a>

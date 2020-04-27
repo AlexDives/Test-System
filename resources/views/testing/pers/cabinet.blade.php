@@ -68,7 +68,7 @@
                                 <div class='card-body'>
                                     <div class='row'>
                                         <div class='col-md-7'>
-                                            <div style='width:35mm;height:45mm;background:url("data:image/png;base64,{{ base64_encode($person->photo) }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
+                                            <div style='width:35mm;height:45mm;background:url("{{ $person->photo_url }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
                                             <div class="form-group" style='float:left'>
                                                 <div>
                                                     <input type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
