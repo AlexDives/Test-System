@@ -68,13 +68,14 @@ class adminController extends Controller
         //persons = DB::table('persons')->where('id', 15)->get(); 
         //hometesting : uvGJTrRNU475
 
-        $persons = DB::table('persons')->get();
+        $persons = DB::table('persons')->where('send_mail', 0)->whereNotNull('email')->whereNull('secret_string')->get();
         foreach ($persons as $pers) {
             Mail::send('admin.ajax.templateEmailWithAttach', [], function ($message) use ($pers) {
                 $message->from('asu@ltsu.org', 'Тех. поддержка ЛНУ имени Тараса Шевченко');
                 $message->to($pers->email, $pers->email)->subject('Инструкция для прохождения тестирования в режиме On-line');
                 $message->attach('https://test.ltsu.org/files/helper.docx');
             });
+            DB::table('persons')->where('id', $pers->id)->update(['send_mail' => 1]);
         }
         return 0;
     }
