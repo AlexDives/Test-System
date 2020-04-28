@@ -83,7 +83,7 @@
 						</form>
 						<div class="error-message" name="error-message" id="error-message"></div>
 						<hr>
-						<a href="/registration" style="color: black;">Регистрация</a>
+						<!--<a href="/registration" style="color: black;">Регистрация</a>-->
 						<a href="/reset_pwd" style="color: black;">Восстановление пароля</a>
 					</div>
 				</figure>

@@ -31,7 +31,13 @@
                             <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMail();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Рассылка на E-mail</span></a>
                         </li>	
                         <li class="slide">
+                            <a href="#" class="side-menu__item" ></a>
+                        </li>	
+                        <li class="slide">
                             <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMailWithAttach();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">E-mail с файлом</span></a>
+                        </li>	
+                        <li class="slide">
+                            <a href="#" class="side-menu__item" ></a>
                         </li>	
                         <li class="slide">
                             <a href="/admin/statistic" class="side-menu__item" id="statistic"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Статистика</span></a>
@@ -52,7 +58,6 @@
                                 <a href="{{ url("/pers/list") }}" class="side-menu__item"><i class="side-menu__icon  fa fa-pencil-square-o"></i><span class="side-menu__label">Перейти в "Тестирование"</span></a>
                             </li>
                         @endif		
-                        				 
                     </ul>
                 </div>
                 <div class='btn-back'>

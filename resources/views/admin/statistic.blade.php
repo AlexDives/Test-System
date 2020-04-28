@@ -31,6 +31,15 @@
                             <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMail();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Рассылка на E-mail</span></a>
                         </li>	
                         <li class="slide">
+                            <a href="#" class="side-menu__item" ></a>
+                        </li>	
+                        <li class="slide">
+                            <a href="#" class="side-menu__item" id="sendAllMail" onclick="sendAllMailWithAttach();"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">E-mail с файлом</span></a>
+                        </li>	
+                        <li class="slide">
+                            <a href="#" class="side-menu__item" ></a>
+                        </li>	
+                        <li class="slide">
                             <a href="/admin/statistic" class="side-menu__item" id="statistic"><i class="side-menu__icon  fa fa-refresh"></i><span class="side-menu__label">Статистика</span></a>
                         </li>	
                         <li class="slide">
@@ -53,7 +62,7 @@
                     </ul>
                 </div>
                 <div class='btn-back'>
-                    <a href="{{ url("/quit") }}" class="side-menu__item"><i class="side-menu__icon fa fa-angle-left"></i><span class="side-menu__label">Выйти</span></a>
+                    <a href="{{ url("/admin") }}" class="side-menu__item"><i class="side-menu__icon fa fa-angle-left"></i><span class="side-menu__label">Назад</span></a>
                 </div>
             </div>
         </div>
