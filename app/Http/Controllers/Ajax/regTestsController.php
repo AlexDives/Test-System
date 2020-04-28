@@ -69,7 +69,7 @@ class regTestsController extends Controller
                     'otch'          => $otch,
                     'birthday'      => $birthday,
                     'gender'        => $gender,
-                    
+                    'user_hash'     => Hash::make($login.Hash::make($pass)),
                     'PIN'           => $pin,
                     'secret_string' => $secret_string
                 ]
