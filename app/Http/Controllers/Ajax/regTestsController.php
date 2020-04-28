@@ -102,14 +102,20 @@ class regTestsController extends Controller
         }
         echo '<script>location.replace("/");</script>';
     }
+
+    function resetPassword_blade(Request $request)
+    {
+        return view('reset_pwd');
+    }
+
     function resetPassword(Request $request)
     {
-        $pers = DB::table('persons')->where('login', $request->login)->first();
+        $pers = DB::table('persons')->where('login', $request->login)->where('email', $request->email)->first();
         if ($pers != null)
         {
-            DB::table('persons')->where('id', $pers->id)->update(['password' => Hash::make($request->pass)]);
-            echo "OK!";
+            DB::table('persons')->where('id', $pers->id)->update(['password' => Hash::make($request->password)]);
+            return 0;
         }
-        else echo "NO OK!!!!";
+        else return -1;
     }
 }

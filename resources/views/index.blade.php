@@ -61,6 +61,7 @@
 					}
 				}
 			}
+
 			function onkeyup_check(e) { if (e.which == 13) auth_check(); }
 		</script>
 	</head>
@@ -83,6 +84,7 @@
 						<div class="error-message" name="error-message" id="error-message"></div>
 						<hr>
 						<a href="/registration" style="color: black;">Регистрация</a>
+						<a href="/reset_pwd" style="color: black;">Восстановление пароля</a>
 					</div>
 				</figure>
 				<figure class="auth-block-back">
