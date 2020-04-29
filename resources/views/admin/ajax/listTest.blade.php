@@ -7,7 +7,8 @@
                         <th>id</th>
                         <th>Дисциплина</th>
                         <th>Тип теста</th>
-                        <th>Всего</th>
+                        <th>Всего зарег.</th>
+                        <th>Прошло</th>
                         <th>Мак. балл</th>
                         <th>Ф.И.О (макс. балл)</th>
                         <th>Мин. балл</th>
@@ -22,6 +23,7 @@
                         <td style="width: 100px; word-wrap : break-word;">{{ $test->discipline }}</td>
                         <td>{{ $test->type }}</td>
                         <td>{{ $test->countPers }}</td>
+                        <td>{{ $test->countPers_end }}</td>
                         <td>{{ $test->max_ball }}</td>
                         <td>{{ $test->fio_max_ball }}</td>
                         <td>{{ $test->min_ball }}</td>
@@ -38,4 +40,4 @@
         <div class="row">Проходит тестирование: <span style="color:darkgoldenrod; font-weight:600; margin:0 5px;"> {{ $count_pers_in_test }} </span> чел.</div>  
         <div class="row">Прошло тестирование (минимум 1 тест): <span style="color:green; font-weight:600; margin:0 5px;"> {{ $count_pers_end_test }} </span> чел.</div>  
         <div class="row">На паузе (минимум 1 тест): <span style="color:darkred; font-weight:600; margin:0 5px;"> {{ $count_pers_pause_test }} </span> чел.</div>  
-</div>
+    </div>

@@ -80,7 +80,13 @@
             <div class='col-md-12'>
                 <div class='row'>
                     <div class='col-md-12'>
-                        <div class="card">									
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    Всего: {{ count($doublePers) }}<br>
+                                    Дубликатов (по ФИО): <?php $c = 0; foreach($doublePers as $dp) $c = $dp ? $c + 1 : $c; echo $c; ?>
+                                </div>
+                            </div>						
                             <div class="table-responsive">
                                 <ul class="open-list accordionjs m-0" data-active-index="false">
                                     <li>

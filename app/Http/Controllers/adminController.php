@@ -14,9 +14,9 @@ class adminController extends Controller
     {
 
         $persons = DB::table('persons')->orderby('id', 'desc')->get();
-        DB::table('persons')->where('email', 'anokhin-toni@mail.ru')->update(['password' => Hash::make('12345')]);
-
+ 
         $persTests = [];
+        $doublePers = [];
         foreach ($persons as $p)
         {
             $persTests += [$p->id => 
@@ -38,10 +38,15 @@ class adminController extends Controller
                     ->get()
                 
             ];
+            $c = DB::table('persons')->where([['famil','=', $p->famil], ['name', '=', $p->name], ['otch', '=', $p->otch], ['id', '<>', $p->id]])->count();
+            $doublePers += [
+                $p->id => $c == 0 ? false : true
+            ];
         }
 
         return view('admin.main', [
             'persTests' => $persTests,
+            'doublePers'=> $doublePers,
             'pers'      => $persons,
             'role'      => session('role_id')
         ]);
@@ -143,6 +148,13 @@ class adminController extends Controller
                             ->where('pt.test_id', $et->test_id)
                             ->count();
 
+            $count_pers_end = DB::table('pers_events as pe')
+                            ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
+                            ->where('pe.event_id', $mer_id)
+                            ->where('pt.test_id', $et->test_id)
+                            ->where('pt.status', '2')
+                            ->count();
+
             $max_ball = DB::table('pers_events as pe')
                             ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                             ->where('pe.event_id', $mer_id)
@@ -161,6 +173,7 @@ class adminController extends Controller
                             ->leftjoin('pers_tests as pt', 'pt.pers_id', 'pe.pers_id')
                             ->where('pe.event_id', $mer_id)
                             ->where('pt.test_id', $et->test_id)
+                            ->where('pt.test_ball_correct', '>', '0')
                             ->min('pt.test_ball_correct');
 
             $fio_min_ball = DB::table('pers_events as pe')
@@ -183,6 +196,7 @@ class adminController extends Controller
                     'discipline'    => $et->discipline,
                     'type'          => $et->type,
                     'countPers'     => $count_pers != null ? $count_pers : 0,
+                    'countPers_end' => $count_pers_end != null ? $count_pers_end : 0,
                     'max_ball'      => $max_ball != null ? $max_ball : 0,
                     'fio_max_ball'  => $fio_max_ball != null ? $fio_max_ball->famil.' '.$fio_max_ball->name.' '.$fio_max_ball->otch : '',
                     'min_ball'      => $min_ball != null ? $min_ball : 0,

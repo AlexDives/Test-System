@@ -20,7 +20,7 @@
                 <h3>
                     <div class='row'>
                         <div class='col-md-1 col-2'>{{ $loop->iteration }}</div>
-                        <div class='col-md-3 col-5'>{{ $p->famil }} {{ $p->name }} {{ $p->otch }}</div>
+                        <div class='col-md-3 col-5'>{{ $p->famil }} {{ $p->name }} {{ $p->otch }} {{ $doublePers[$p->id] ? '(есть дубликат)' : '' }}</div>
                         <div class='col-md-1 col-2'>{{ $p->PIN }}</div>
                         <div class='col-md-3 m-h'>{{ $p->email }}</div>
                         <div class='col-md-2 m-h'>{{ date('d.m.Y H:i', strtotime($p->date_crt))}}</div>
@@ -90,6 +90,6 @@
                     </div>
                 </p>
             </div>
-        </li>		
+        </li>
     @endforeach
 </ul>
