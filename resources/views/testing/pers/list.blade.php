@@ -59,7 +59,7 @@
             <div class="row" >
                 <div class="col-md-12">
                     <div class="input-group mb-1">
-                        <input type="text" class="form-control bg-white" placeholder="Найти..." onfocus="this.removeAttribute('readonly')" readonly=()>
+                        <input type="text" class="form-control bg-white" id="search" placeholder="Найти..." onfocus="this.removeAttribute('readonly')" onkeyup="searchPers();" readonly >
                         <div class="input-group-append ">
                             <button type="button" class="btn btn-primary ">
                                 <i class="fa fa-search " aria-hidden="true"></i>
@@ -76,7 +76,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
@@ -133,6 +133,20 @@
                             else Swal.fire("Внимание!", "Неверный PIN!", "error");
                         }
                     });
+                }
+            });
+        }
+        function searchPers()
+        {
+            $.ajax({
+                url: '/pers/list/search',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: { search : $('#search').val() },
+                success: function(html) {
+                    $('.persTable').html(html);
                 }
             });
         }

@@ -8,19 +8,18 @@
 		<meta name="author" content="ЛНУ имени Тараса Шевченко">
 		<meta name="keywords" content="Список тестов"/>
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-
 		<link href="{{ asset('images/favicon.ico') }}" rel="icon" type="image/x-icon"/>
 		<link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 		@yield('includeStyles')
 		@yield('includeScripts')
 	</head>
 
 	<body class="app sidebar-mini rtl">
-		<div id="global-loader">
-			<img src="{{ asset('images/loader.svg') }}" alt="loader">
-		</div>
+		@if(Route::currentRouteName() != 'admin.statistic' && Route::currentRouteName() != 'admin.gia')
+			<div id="global-loader">
+				<img src="{{ asset('images/loader.svg') }}" alt="loader">
+			</div>
+		@endif
 		<div class="page">
 			<div class="page-main">
 				@yield('header')

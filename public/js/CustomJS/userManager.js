@@ -50,6 +50,9 @@ function newUser() {
     $('#tel_num').val("");
     $('#roles').val("");
     $('#is_block').prop('checked', false);
+	$('#password').val("");
+    $('#password_two').val("");
+
 }
 /**********************/
 
@@ -98,8 +101,10 @@ function loadUserTable() {
         type: 'GET',
         success: function(html) {
             $('#userTable').html(html);
+            newUser();
         }
     });
+    //setTimeout(arguments.callee, 60000);
 }
 loadUserTable();
-setInterval(loadUserTable, 60000);
+//setTimeout(loadUserTable, 60000);

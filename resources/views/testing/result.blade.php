@@ -28,9 +28,9 @@
                 <div class="tab-pane active" id="index1">
                     <ul class="side-menu toggle-menu">
                         <li class="slide show_report">
-                            <a href="#" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
+                            <a href="#" onclick="shortResult();" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
                         </li>
-                        @if ($role == 1 || $role == 2 || $role == 3)
+                        @if ($role == 1 || $role == 2)
                             <li class="slide show_report">
                                 <a href="#" class="side-menu__item"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Полный отчет</span></a>
                             </li>
@@ -38,9 +38,23 @@
                         								 
                     </ul>
                 </div>
-                <div class='btn-back'>
-                    <a href="/pers/cabinet" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Выйти</span></a>
-                </div>
+                @if ($role == 5 && $pers_type == 't')
+                    <div class='btn-back'>
+                        <a href="/persons" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Назад</span></a>
+                    </div>
+                @elseif ($role == 5 && $pers_type == 'g')
+                    <div class='btn-back'>
+                        <a href="/quit" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Выход</span></a>
+                    </div>
+                @elseif ($role == 5 && $pers_type == 'a')
+                    <div class='btn-back'>
+                        <a href="https://abit.ltsu.org/profile?pid=".$pid class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Назад</span></a>
+                    </div>
+                @else
+                    <div class='btn-back'>
+                        <a href="/pers/cabinet" class="side-menu__item"><i class="side-menu__icon  fa fa-sign-out"></i><span class="side-menu__label">Назад</span></a>
+                    </div>
+                @endif
             </div>
         </div>
     </aside>
@@ -135,7 +149,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
@@ -151,7 +165,16 @@
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
     <script>
-
+        function shortResult()
+        {
+            let form = document.createElement('form');
+            form.action = '/test/result/short';
+            form.method = 'POST';
+            form.target = '_blank';
+            form.innerHTML = '<input name="ptid" value="{{ $ptid }}">{{ csrf_field() }}';
+            document.body.append(form);
+            form.submit();
+        }
     </script>
 @endsection
 
@@ -175,7 +198,6 @@
 		}
 		.block_v {
 			font-size: 20px;
-			/*text-decoration: underline;*/
 			text-align: left;
 		}
 		.d { text-decoration: underline; font-size: inherit; }

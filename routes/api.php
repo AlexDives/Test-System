@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Http\Controllers\api\questionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::post('/insertQuestion', 'api\questionController@insert');
+Route::get('/testList', 'api\questionController@testList');

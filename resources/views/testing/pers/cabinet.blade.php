@@ -34,7 +34,7 @@
                             <a href="" class="side-menu__item"><i class="side-menu__icon  fa fa-repeat"></i><span class="side-menu__label">Обновить</span></a>
                         </li>
                         <li class="slide show_report" style="display: none;">
-                            <a href="#" class="side-menu__item" ><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
+                            <a href="#" class="side-menu__item" onclick="shortResult();"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Краткий отчет</span></a>
                         </li>
                         @if ($role == 1 || $role == 2 || $role == 3)
                             <li class="slide show_report" style="display: none;">
@@ -68,7 +68,7 @@
                                 <div class='card-body'>
                                     <div class='row'>
                                         <div class='col-md-7'>
-                                            <div style='width:35mm;height:45mm;background:url("data:image/png;base64,{{ base64_encode($person->photo) }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
+                                            <div style='width:35mm;height:45mm;background:url("{{ $person->photo_url }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
                                             <div class="form-group" style='float:left'>
                                                 <div>
                                                     <input type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
@@ -86,11 +86,6 @@
                                                 <h1>PIN {{ $person->PIN }}</h1>
                                             </div>
                                         </div>
-                                        <!--<div class='col-md-6'>
-                                            <div style='text-align: center;width:100%;height:100%;padding-top:50px; border: 1px solid black;'>
-                                                <h1>ИНФО БЛОК</h1>
-                                            </div>
-                                        </div>-->
                                     </div>
                                 </div>			 				 
                             </div>
@@ -110,7 +105,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-12 col-sm-12   text-center">
-                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени тараса Шевченко</a>
+                        © {{ date('Y', time()) }} <a href="{{ url("/") }}">ЛНУ имени Тараса Шевченко</a>
                     </div>
                 </div>
             </div>
@@ -126,9 +121,6 @@
     <script src="{{ asset('js/jquery.sweet-modal.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert4.min.js') }}"></script>
     <script>
-        /*setInterval(() => {
-            window.location.reload();
-        }, 300000); // каждые 5 мин обновить страницу*/
         var testPersId = 0;
         var gStatus = 0
         function checkedRow(obj, status){
@@ -151,8 +143,24 @@
         {
             if (testPersId != 0 && gStatus != 2)
             {
-                window.location.replace('/test/start?ptid='+testPersId);
+                let form = document.createElement('form');
+                form.action = '/test/start';
+                form.method = 'POST';
+                form.innerHTML = '<input name="ptid" value="' + testPersId + '">{{ csrf_field() }}';
+                document.body.append(form);
+                form.submit();
             }
+        }
+
+        function shortResult()
+        {
+            let form = document.createElement('form');
+            form.action = '/test/result/short';
+            form.method = 'POST';
+            form.target = '_blank';
+            form.innerHTML = '<input name="ptid" value="' + testPersId + '">{{ csrf_field() }}';
+            document.body.append(form);
+            form.submit();
         }
     </script>
 @endsection
