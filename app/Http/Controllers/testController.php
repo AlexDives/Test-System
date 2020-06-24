@@ -204,19 +204,6 @@ class testController extends Controller
 	{
 		$ptid = $request->ptid;
 
-		//////////////////////////////////////////
-		$correctBall = DB::table('pers_test_details')
-		->where('pers_test_id', $ptid)
-		->whereNotNull('answer_id')
-		->sum('answer_ball');
-		divesController::fix($ptid, $correctBall);
-		//////////////////////////////////////////
-
-		$correctBall = DB::table('pers_test_details')
-		->where('pers_test_id', $ptid)
-		->whereNotNull('answer_id')
-		->sum('answer_ball');
-
 		$test = DB::table('tests')
 			->leftJoin('type_test', 'type_test.id', '=', 'tests.type_id')
 			->leftjoin('pers_tests', 'pers_tests.test_id', 'tests.id')
@@ -230,7 +217,40 @@ class testController extends Controller
 			)
 			->where('pers_tests.id', $ptid)
 			->first();
+		$pers = DB::table('persons')->leftjoin('pers_tests', 'pers_tests.pers_id', 'persons.id')->where('pers_tests.id', $ptid)->select('persons.*')->first();
 		if ($test == null) echo '<script>location.replace("/pers/cabinet");</script>';
+
+		$count_answ = DB::table('pers_test_details')->where('pers_test_id', $ptid)->whereNotNull('answer_id')->count();
+
+		if (!$request->has('stop'))
+		{
+			if (($count_answ < $test->count_question) && (($test->minuts_spent + 1) < $test->test_time))
+			{
+				DB::table('pers_tests')->where('id', $ptid)->update([ 'status' => 3 ]);
+				if ($pers->pers_type == 't') {
+					echo '<script>location.replace("/pers/cabinet");</script>'; exit;
+				}
+				else if($pers->pers_type == 'a')
+				{
+					echo '<script>location.replace("https://abit.ltsu.org/profile");</script>'; exit;
+				}
+			}
+		}
+		
+		
+		//////////////////////////////////////////
+		$correctBall = DB::table('pers_test_details')
+		->where('pers_test_id', $ptid)
+		->whereNotNull('answer_id')
+		->sum('answer_ball');
+		divesController::fix($ptid, $correctBall);
+		//////////////////////////////////////////
+
+		$correctBall = DB::table('pers_test_details')
+		->where('pers_test_id', $ptid)
+		->whereNotNull('answer_id')
+		->sum('answer_ball');
+
 		$countAllQuestion = $test->count_question;
 		$maxBall = $test->max_ball;
 		$maxTime = $test->test_time;

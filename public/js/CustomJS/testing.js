@@ -41,7 +41,7 @@ function fastStop() {
             let form = document.createElement('form');
             form.action = '/test/result';
             form.method = 'POST';
-            form.innerHTML = '<input name="ptid" value="' + pers_test_id + '">' + csrf;
+            form.innerHTML = '<input type="hidden" name="stop" value="T"><input type="hidden" name="ptid" value="' + pers_test_id + '">' + csrf;
             document.body.append(form);
             form.submit();
         } else {
