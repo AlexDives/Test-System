@@ -106,8 +106,25 @@ function ajaxQuestList(test_id, pers_test_id) {
                 loadQuestList(data);
             }
         },
-        error: function(msg) {
-            alert('Ошибка');
+        error: function(jqxhr, status, errorMsg) {
+            Swal.fire({
+                title: status,
+                html: 'Ошибка соединения. Вы будете перемещены в личный кабинет. Повторите попытку через пару минут.',
+                showCloseButton: false,
+                showCancelButton: false,
+                focusConfirm: false,
+                confirmButtonText: 'OK',
+                closeOnClickOutside: false,
+                icon: 'error',
+            }).then((result) => {
+                if (result.value) {
+                    let form = document.createElement('form');
+                    form.action = 'https://abit.ltsu.org/profile';
+                    form.method = 'GET';
+                    document.body.append(form);
+                    form.submit();
+                }
+            });
         }
     });
 }
@@ -180,8 +197,25 @@ function selectedQuest(qid, obj) {
 
                 }
             },
-            error: function(msg) {
-                alert('Ошибка');
+            error: function(jqxhr, status, errorMsg) {
+                Swal.fire({
+                    title: status,
+                    html: 'Ошибка соединения. Вы будете перемещены в личный кабинет. Повторите попытку через пару минут.',
+                    showCloseButton: false,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    confirmButtonText: 'OK',
+                    closeOnClickOutside: false,
+                    icon: 'error',
+                }).then((result) => {
+                    if (result.value) {
+                        let form = document.createElement('form');
+                        form.action = 'https://abit.ltsu.org/profile';
+                        form.method = 'GET';
+                        document.body.append(form);
+                        form.submit();
+                    }
+                });
             }
         });
     } else { clearQuest(); }
@@ -288,8 +322,25 @@ function confirmResponse() {
                         deleteQuest();
                     }
                 },
-                error: function(msg) {
-                    alert('Ошибка');
+                error: function(jqxhr, status, errorMsg) {
+                    Swal.fire({
+                        title: status,
+                        html: 'Ошибка соединения. Вы будете перемещены в личный кабинет. Повторите попытку через пару минут.',
+                        showCloseButton: false,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: 'OK',
+                        closeOnClickOutside: false,
+                        icon: 'error',
+                    }).then((result) => {
+                        if (result.value) {
+                            let form = document.createElement('form');
+                            form.action = 'https://abit.ltsu.org/profile';
+                            form.method = 'GET';
+                            document.body.append(form);
+                            form.submit();
+                        }
+                    });
                 }
             });
         }
@@ -316,12 +367,25 @@ function time_left() {
                     'error'
                 );
         },
-        error: function(msg) {
-            Swal.fire(
-                'Ошибка!',
-                '',
-                'error'
-            );
+        error: function(jqxhr, status, errorMsg) {
+            Swal.fire({
+                title: status,
+                html: 'Ошибка соединения. Вы будете перемещены в личный кабинет. Повторите попытку через пару минут.',
+                showCloseButton: false,
+                showCancelButton: false,
+                focusConfirm: false,
+                confirmButtonText: 'OK',
+                closeOnClickOutside: false,
+                icon: 'error',
+            }).then((result) => {
+                if (result.value) {
+                    let form = document.createElement('form');
+                    form.action = 'https://abit.ltsu.org/profile';
+                    form.method = 'GET';
+                    document.body.append(form);
+                    form.submit();
+                }
+            });
         }
     });
 }
