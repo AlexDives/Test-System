@@ -235,7 +235,7 @@ class testController extends Controller
 					echo '<script>location.replace("https://abit.ltsu.org/profile");</script>'; exit;
 				}
 			}
-		}
+		} else DB::table('pers_tests')->where('id', $ptid)->update([ 'is_stop' => 'T' ]);
 		
 		
 		//////////////////////////////////////////
