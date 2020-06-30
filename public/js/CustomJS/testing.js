@@ -360,12 +360,12 @@ function time_left() {
             minuts_spent: minuts_spent
         },
         success: function(data) {
-            if (data == -1)
+            /*if (data == -1)
                 Swal.fire(
                     'Ошибка!',
                     'Попытка изменения таймера!',
                     'error'
-                );
+                );*/
         },
         error: function(jqxhr, status, errorMsg) {
             Swal.fire({
@@ -438,6 +438,8 @@ Swal.fire({
                     time_left();
                 }
                 if (t.total <= 0) {
+                    minuts_spent = max_test_time;
+                    time_left();
                     clearInterval(timeinterval);
                     endTest(1);
                 }
