@@ -32,7 +32,7 @@
                         </li>
                         @if ($role == 1 || $role == 2)
                             <li class="slide show_report">
-                                <a href="#" class="side-menu__item"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Полный отчет</span></a>
+                                <a href="#" onclick="fullResult();" class="side-menu__item"><i class="side-menu__icon  fa fa-file-text-o"></i><span class="side-menu__label">Полный отчет</span></a>
                             </li>
                         @endif
                         								 
@@ -169,6 +169,16 @@
         {
             let form = document.createElement('form');
             form.action = '/test/result/short';
+            form.method = 'POST';
+            form.target = '_blank';
+            form.innerHTML = '<input name="ptid" value="{{ $ptid }}">{{ csrf_field() }}';
+            document.body.append(form);
+            form.submit();
+        }
+        function fullResult()
+        {
+            let form = document.createElement('form');
+            form.action = '/test/result/full';
             form.method = 'POST';
             form.target = '_blank';
             form.innerHTML = '<input name="ptid" value="{{ $ptid }}">{{ csrf_field() }}';
