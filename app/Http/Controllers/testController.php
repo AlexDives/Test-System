@@ -310,7 +310,7 @@ class testController extends Controller
 						DB::table('abit_examCard')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
 							'ball'	=> $correctBall
 						]);
-							DB::table('abit_examCard')->whereNull('date_exam')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
+						DB::table('abit_examCard')->whereNull('date_exam')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
 							'date_exam'	=> $tmp_pt->start_time
 						]);
 					}
