@@ -322,6 +322,7 @@ class testController extends Controller
 		//session('ptid', '');
 		$request->session()->forget('ptid');
 		$pers_type = DB::table('persons')->leftjoin('pers_tests', 'pers_tests.pers_id', 'persons.id')->where('pers_tests.id', $ptid)->first()->pers_type;
+		//$request->session()->getHandler()->destroy($request->session()->getID());
 		return view(
 			'testing.result',
 			[
