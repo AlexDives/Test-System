@@ -21,6 +21,7 @@
 @endsection
 
 @section('content')
+<div id="loadForm" style="display: none;"></div>
     <div class="app-content  my-3 my-md-5 toggle-content" id='main-page' style='display: none'>
         <div class="side-app">
             <div class="page-header"></div>

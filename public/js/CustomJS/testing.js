@@ -42,7 +42,9 @@ function fastStop() {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input type="hidden" name="stop" value="T"><input type="hidden" name="ptid" value="' + pers_test_id + '">' + csrf;
-            document.body.append(form);
+            //document.body.append(form);
+            
+            $('#loadForm').html(form);
             form.submit();
         } else {
             fullscreen(document.documentElement);
@@ -121,7 +123,8 @@ function ajaxQuestList(test_id, pers_test_id) {
                     let form = document.createElement('form');
                     form.action = 'https://abit.ltsu.org/profile';
                     form.method = 'GET';
-                    document.body.append(form);
+                    //document.body.append(form);
+                    $('#loadForm').html(form);
                     form.submit();
                 }
             });
@@ -212,7 +215,8 @@ function selectedQuest(qid, obj) {
                         let form = document.createElement('form');
                         form.action = 'https://abit.ltsu.org/profile';
                         form.method = 'GET';
-                        document.body.append(form);
+                        //document.body.append(form);
+                        $('#loadForm').html(form);
                         form.submit();
                     }
                 });
@@ -247,7 +251,8 @@ function endTest(type) {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input name="ptid" value="' + pers_test_id + '">' + csrf;
-            document.body.append(form);
+            //document.body.append(form);
+            $('#loadForm').html(form);
             form.submit();
         }
     });
@@ -337,7 +342,8 @@ function confirmResponse() {
                             let form = document.createElement('form');
                             form.action = 'https://abit.ltsu.org/profile';
                             form.method = 'GET';
-                            document.body.append(form);
+                            //document.body.append(form);
+                            $('#loadForm').html(form);
                             form.submit();
                         }
                     });
@@ -382,7 +388,8 @@ function time_left() {
                     let form = document.createElement('form');
                     form.action = 'https://abit.ltsu.org/profile';
                     form.method = 'GET';
-                    document.body.append(form);
+                    //document.body.append(form);
+                    $('#loadForm').html(form);
                     form.submit();
                 }
             });
@@ -456,6 +463,12 @@ Swal.fire({
         initializeClock('countdown', deadline);
         // таймер
     } else {
-        window.location.href = "/pers/cabinet"
+        //window.location.href = "/pers/cabinet"
+        let form = document.createElement('form');
+        form.action = 'https://abit.ltsu.org/profile';
+        form.method = 'GET';
+        //document.body.append(form);
+        $('#loadForm').html(form);
+        form.submit();
     }
 });
