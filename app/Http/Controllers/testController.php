@@ -251,99 +251,102 @@ class testController extends Controller
 		->whereNotNull('answer_id')
 		->sum('answer_ball');
 
-		$countAllQuestion = $test->count_question;
-		$maxBall = $test->max_ball;
-		$maxTime = $test->test_time;
-		$test_name = $test->typeTestName . ' - ' . $test->discipline;
-		$countAnswer = DB::table('pers_test_details')
-			->where('pers_test_id', $ptid)
-			->whereNotNull('answer_id')
-			->count();
-		$countTrueAnswer = DB::table('pers_test_details')
-			->where('pers_test_id', $ptid)
-			->where('answer_ball', ">", 0)
-			->whereNotNull('answer_id')
-			->count();
+		if ($correctBall != 0) {
+			$countAllQuestion = $test->count_question;
+			$maxBall = $test->max_ball;
+			$maxTime = $test->test_time;
+			$test_name = $test->typeTestName . ' - ' . $test->discipline;
+			$countAnswer = DB::table('pers_test_details')
+				->where('pers_test_id', $ptid)
+				->whereNotNull('answer_id')
+				->count();
+			$countTrueAnswer = DB::table('pers_test_details')
+				->where('pers_test_id', $ptid)
+				->where('answer_ball', ">", 0)
+				->whereNotNull('answer_id')
+				->count();
 
-		$countFalseAnswer = DB::table('pers_test_details')
-			->where('pers_test_id', $ptid)
-			->where('answer_ball', "=", 0)
-			->whereNotNull('answer_id')
-			->count();
-		
-		$startTime = $test->start_time;
-		$endTime = $test->end_time != null ? $test->end_time : date("Y-m-d H:i:s", time());
+			$countFalseAnswer = DB::table('pers_test_details')
+				->where('pers_test_id', $ptid)
+				->where('answer_ball', "=", 0)
+				->whereNotNull('answer_id')
+				->count();
+			
+			$startTime = $test->start_time;
+			$endTime = $test->end_time != null ? $test->end_time : date("Y-m-d H:i:s", time());
 
-		$correntMinutes = $test->minuts_spent;
+			$correntMinutes = $test->minuts_spent;
 
-		$resultTest = $correctBall >= $test->min_ball ? true : false;
+			$resultTest = $correctBall >= $test->min_ball ? true : false;
 
-		DB::table('pers_tests')
-			->where('id', $ptid)
-			->update(
-				[
-					'end_time'          => $endTime,
-					'timeLeft'          => 0,
-					'last_active'       => null,
-					'quest_count'       => $countAllQuestion,
-					'answer_count'      => $countAnswer,
-					'correct_count'     => $countTrueAnswer,
-					'test_ball_max'     => $maxBall,
-					'test_ball_correct' => $correctBall,
-					'status'            => 2
-				]
-			);
-		
-		//////////////////////////////////////////
+			DB::table('pers_tests')
+				->where('id', $ptid)
+				->update(
+					[
+						'end_time'          => $endTime,
+						'timeLeft'          => 0,
+						'last_active'       => null,
+						'quest_count'       => $countAllQuestion,
+						'answer_count'      => $countAnswer,
+						'correct_count'     => $countTrueAnswer,
+						'test_ball_max'     => $maxBall,
+						'test_ball_correct' => $correctBall,
+						'status'            => 2
+					]
+				);
+			
+			//////////////////////////////////////////
 
-		$tmp_pt = DB::table('pers_tests')->where('id', $ptid)->first();
-		$tmp_p	= DB::table('persons')->where('id', $tmp_pt->pers_id)->first();
-		if ($tmp_p->pers_type == 'a')
-		{
-			$tmp_pred = DB::table('abit_predmets')->where('test_id', $tmp_pt->test_id)->first();
-			if ($tmp_pred != null)
+			$tmp_pt = DB::table('pers_tests')->where('id', $ptid)->first();
+			$tmp_p	= DB::table('persons')->where('id', $tmp_pt->pers_id)->first();
+			if ($tmp_p->pers_type == 'a')
 			{
-				$tmp_examGroup = DB::table('abit_examenGroup')->where('predmet_id', $tmp_pred->id)->get();
-				$tmp_statementPers = DB::table('abit_statements')->where('person_id', $tmp_p->id)->whereNull('date_return')->get();
-				foreach ($tmp_examGroup as $teg) {
-					foreach ($tmp_statementPers as $tsp) {
-						DB::table('abit_examCard')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
-							'ball'	=> $correctBall
-						]);
-						DB::table('abit_examCard')->whereNull('date_exam')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
-							'date_exam'	=> $tmp_pt->start_time
-						]);
+				$tmp_pred = DB::table('abit_predmets')->where('test_id', $tmp_pt->test_id)->first();
+				if ($tmp_pred != null)
+				{
+					$tmp_examGroup = DB::table('abit_examenGroup')->where('predmet_id', $tmp_pred->id)->get();
+					$tmp_statementPers = DB::table('abit_statements')->where('person_id', $tmp_p->id)->whereNull('date_return')->get();
+					foreach ($tmp_examGroup as $teg) {
+						foreach ($tmp_statementPers as $tsp) {
+							DB::table('abit_examCard')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
+								'ball'	=> $correctBall
+							]);
+							DB::table('abit_examCard')->whereNull('date_exam')->where('state_id', $tsp->id)->where('exam_id', $teg->id)->update([
+								'date_exam'	=> $tmp_pt->start_time
+							]);
+						}
 					}
 				}
 			}
-		}
 
-		//////////////////////////////////////////
-		//session('ptid', '');
-		$request->session()->forget('ptid');
-		$pers_type = DB::table('persons')->leftjoin('pers_tests', 'pers_tests.pers_id', 'persons.id')->where('pers_tests.id', $ptid)->first()->pers_type;
-		//$request->session()->getHandler()->destroy($request->session()->getID());
-		return view(
-			'testing.result',
-			[
-				'test_name' => $test_name,
-				'countAllQuestion' => $countAllQuestion,
-				'maxBall' => $maxBall,
-				'maxTime' => $maxTime,
-				'countAnswer' => $countAnswer,
-				'countTrueAnswer' => $countTrueAnswer,
-				'countFalseAnswer' => $countFalseAnswer,
-				'correctBall' => $correctBall,
-				'startTime' => $startTime,
-				'endTime' => $endTime,
-				'correntMinutes' => $correntMinutes,
-				'resultTest' => $resultTest,
-				'role' => session('role_id'),
-				'ptid'  => $ptid,
-				'pers_type' => $pers_type,
-				'pid'	=> $tmp_p->id
-			]
-		);
+			//////////////////////////////////////////
+			//session('ptid', '');
+			$request->session()->forget('ptid');
+			$pers_type = DB::table('persons')->leftjoin('pers_tests', 'pers_tests.pers_id', 'persons.id')->where('pers_tests.id', $ptid)->first()->pers_type;
+			//$request->session()->getHandler()->destroy($request->session()->getID());
+			return view(
+				'testing.result',
+				[
+					'test_name' => $test_name,
+					'countAllQuestion' => $countAllQuestion,
+					'maxBall' => $maxBall,
+					'maxTime' => $maxTime,
+					'countAnswer' => $countAnswer,
+					'countTrueAnswer' => $countTrueAnswer,
+					'countFalseAnswer' => $countFalseAnswer,
+					'correctBall' => $correctBall,
+					'startTime' => $startTime,
+					'endTime' => $endTime,
+					'correntMinutes' => $correntMinutes,
+					'resultTest' => $resultTest,
+					'role' => session('role_id'),
+					'ptid'  => $ptid,
+					'pers_type' => $pers_type,
+					'pid'	=> $tmp_p->id
+				]
+			);
+		}
+		return redirect()->away("https://abit.ltsu.org/profile");
 	}
 
 	function speedTest(Request $request)

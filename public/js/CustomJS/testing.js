@@ -1,3 +1,98 @@
+var BrowserDetect = {
+    init: function() {
+        this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+        this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "an unknown version";
+    },
+    searchString: function(data) {
+        for (var i = 0; i < data.length; i++) {
+            var dataString = data[i].string;
+            var dataProp = data[i].prop;
+            this.versionSearchString = data[i].versionSearch || data[i].identity;
+            if (dataString) {
+                if (dataString.indexOf(data[i].subString) != -1)
+                    return data[i].identity;
+            } else if (dataProp)
+                return data[i].identity;
+        }
+    },
+    searchVersion: function(dataString) {
+        var index = dataString.indexOf(this.versionSearchString);
+        if (index == -1) return;
+        return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+    },
+    dataBrowser: [{
+            string: navigator.userAgent,
+            subString: "Chrome",
+            identity: "Chrome"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "OmniWeb",
+            versionSearch: "OmniWeb/",
+            identity: "OmniWeb"
+        },
+        {
+            string: navigator.vendor,
+            subString: "Apple",
+            identity: "Safari",
+            versionSearch: "Version"
+        },
+        {
+            prop: window.opera,
+            identity: "Opera",
+            versionSearch: "Version"
+        },
+        {
+            string: navigator.vendor,
+            subString: "iCab",
+            identity: "iCab"
+        },
+        {
+            string: navigator.vendor,
+            subString: "KDE",
+            identity: "Konqueror"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "Firefox",
+            identity: "Firefox"
+        },
+        {
+            string: navigator.vendor,
+            subString: "Camino",
+            identity: "Camino"
+        },
+        {
+            /* For Newer Netscapes (6+) */
+            string: navigator.userAgent,
+            subString: "Netscape",
+            identity: "Netscape"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "MSIE",
+            identity: "Internet Explorer",
+            versionSearch: "MSIE"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "Gecko",
+            identity: "Mozilla",
+            versionSearch: "rv"
+        },
+        {
+            /* For Older Netscapes (4-) */
+            string: navigator.userAgent,
+            subString: "Mozilla",
+            identity: "Netscape",
+            versionSearch: "Mozilla"
+        }
+    ]
+};
+BrowserDetect.init();
+console.log(BrowserDetect.browser);
+console.log(BrowserDetect.version);
+
 function fullscreen(element) {
     if (element.requestFullScreen) {
         element.requestFullScreen();
@@ -42,9 +137,8 @@ function fastStop() {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input type="hidden" name="stop" value="T"><input type="hidden" name="ptid" value="' + pers_test_id + '">' + csrf;
-            //document.body.append(form);
-            
-            $('#loadForm').html(form);
+            if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+            else document.body.append(form);
             form.submit();
         } else {
             fullscreen(document.documentElement);
@@ -119,14 +213,12 @@ function ajaxQuestList(test_id, pers_test_id) {
                 closeOnClickOutside: false,
                 icon: 'error',
             }).then((result) => {
-                if (result.value) {
-                    let form = document.createElement('form');
-                    form.action = 'https://abit.ltsu.org/profile';
-                    form.method = 'GET';
-                    //document.body.append(form);
-                    $('#loadForm').html(form);
-                    form.submit();
-                }
+                let form = document.createElement('form');
+                form.action = 'https://abit.ltsu.org/profile';
+                if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                else document.body.append(form);
+                $('#loadForm').html(form);
+                form.submit();
             });
         }
     });
@@ -155,10 +247,8 @@ function findRow(node) {
 function selectedQuest(qid, obj) {
 
     const wrapObj = document.querySelector('.li');
-    var lastIndex = 0;
     for (let i = 0; i < wrapObj.children.length; i++) {
         wrapObj.children[i].classList.remove('active');
-        lastIndex = i;
     }
     obj.parentNode.classList.add('active');
 
@@ -211,14 +301,12 @@ function selectedQuest(qid, obj) {
                     closeOnClickOutside: false,
                     icon: 'error',
                 }).then((result) => {
-                    if (result.value) {
-                        let form = document.createElement('form');
-                        form.action = 'https://abit.ltsu.org/profile';
-                        form.method = 'GET';
-                        //document.body.append(form);
-                        $('#loadForm').html(form);
-                        form.submit();
-                    }
+                    let form = document.createElement('form');
+                    form.action = 'https://abit.ltsu.org/profile';
+                    form.method = 'GET';
+                    if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                    else document.body.append(form);
+                    form.submit();
                 });
             }
         });
@@ -251,8 +339,8 @@ function endTest(type) {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input name="ptid" value="' + pers_test_id + '">' + csrf;
-            //document.body.append(form);
-            $('#loadForm').html(form);
+            if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+            else document.body.append(form);
             form.submit();
         }
     });
@@ -260,9 +348,6 @@ function endTest(type) {
 
 function deleteQuest() {
     var qid = $('#idQuest').val();
-    /*var c = 0 + cor_ball + ballMass[qid];
-    console.log(cor_ball + ' + ' + ballMass[qid] + ' = ' + c);
-    cor_ball += ballMass[qid];*/
     ballMass[qid] = null;
     var indexRem = $('.s-ask').filter('.active').index();
     if (currentQuestion - 1 == indexRem) indexRem = 0;
@@ -338,14 +423,12 @@ function confirmResponse() {
                         closeOnClickOutside: false,
                         icon: 'error',
                     }).then((result) => {
-                        if (result.value) {
-                            let form = document.createElement('form');
-                            form.action = 'https://abit.ltsu.org/profile';
-                            form.method = 'GET';
-                            //document.body.append(form);
-                            $('#loadForm').html(form);
-                            form.submit();
-                        }
+                        let form = document.createElement('form');
+                        form.action = 'https://abit.ltsu.org/profile';
+                        form.method = 'GET';
+                        if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                        else document.body.append(form);
+                        form.submit();
                     });
                 }
             });
@@ -366,12 +449,7 @@ function time_left() {
             minuts_spent: minuts_spent
         },
         success: function(data) {
-            /*if (data == -1)
-                Swal.fire(
-                    'Ошибка!',
-                    'Попытка изменения таймера!',
-                    'error'
-                );*/
+
         },
         error: function(jqxhr, status, errorMsg) {
             Swal.fire({
@@ -384,14 +462,12 @@ function time_left() {
                 closeOnClickOutside: false,
                 icon: 'error',
             }).then((result) => {
-                if (result.value) {
-                    let form = document.createElement('form');
-                    form.action = 'https://abit.ltsu.org/profile';
-                    form.method = 'GET';
-                    //document.body.append(form);
-                    $('#loadForm').html(form);
-                    form.submit();
-                }
+                let form = document.createElement('form');
+                form.action = 'https://abit.ltsu.org/profile';
+                form.method = 'GET';
+                if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                else document.body.append(form);
+                form.submit();
             });
         }
     });
@@ -467,8 +543,8 @@ Swal.fire({
         let form = document.createElement('form');
         form.action = 'https://abit.ltsu.org/profile';
         form.method = 'GET';
-        //document.body.append(form);
-        $('#loadForm').html(form);
+        if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+        else document.body.append(form);
         form.submit();
     }
 });
