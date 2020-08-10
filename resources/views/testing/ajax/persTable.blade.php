@@ -13,7 +13,8 @@
                     <td>
                         <div class='row' style="align-items: center;">
                             <div class='col-md-2 block_user' id='photouser{{ $loop->iteration }}' style='display: none'>
-                                <div style='border: 1px solid #ccc; width:25mm; height:35mm; background: url("{{ $pers->photo_url }}");background-size:cover'></div>
+                                <img src="{{ $pers->photo_url }}" style='width:35mm;height:45mm;' alt="" class="d-block" id="photo_main">
+                                            
                             </div>
                             <div class='col-md-10 t-text' >{{ $pers->famil.' '.$pers->name.' '.$pers->otch }} </div>
                         </div>

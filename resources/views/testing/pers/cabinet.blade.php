@@ -67,17 +67,19 @@
                             <div class="card">									
                                 <div class='card-body'>
                                     <div class='row'>
-                                        <div class='col-md-7'>
-                                            <div style='width:35mm;height:45mm;background:url("{{ $person->photo_url }}");border:1px solid #eee;float:left;margin-right:15px; background-size:cover'></div>
-                                            <div class="form-group" style='float:left'>
+                                        <div class='row col-md-7'>
+                                            <div class="col-md-3">
+                                                <img src="{{ $person->photo_url }}" style='width:35mm;height:45mm;' alt="" class="d-block ui-w-100" id="photo_main">
+                                            </div>
+                                            <div class="form-group col-md-6">
                                                 <div>
-                                                    <input type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
+                                                    <input style="border: transparent; background-color: transparent; color:black;" type="text" class="form-control mb-2" placeholder="Фамилия" value="{{ $person->famil }}" readonly>
                                                 </div>
                                                 <div>
-                                                    <input type="text" class="form-control mb-2" placeholder="Имя" value="{{ $person->name }}" readonly>
+                                                    <input style="border: transparent; background-color: transparent; color:black;" type="text" class="form-control mb-2" placeholder="Имя" value="{{ $person->name }}" readonly>
                                                 </div>
                                                 <div>
-                                                    <input type="text" class="form-control" placeholder="Отчество" value="{{ $person->otch }}" readonly>
+                                                    <input style="border: transparent; background-color: transparent; color:black;" type="text" class="form-control" placeholder="Отчество" value="{{ $person->otch }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
