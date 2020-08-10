@@ -198,13 +198,13 @@ class persController extends Controller
             {
                 switch ($test->status) {
                     case 0:
-                        if ($person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2)
+                        if (/*$person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2*/ true)
                             $status = "<span style='cursor:default;background-color: forestgreen;' class='badge badge-primary'>Готов к прохождению</span>";
                         else 
                             $status = "<span class='badge badge-danger'>Тест не доступен</span>";
                         break;
                     case 1:
-                        if ($person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2)
+                        if (/*$person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2*/ true)
                             $status = "<span style='cursor:default;' class='badge badge-warning'>Продолжить</span>";
                         else 
                             $status = "<span class='badge badge-danger'>Тест не доступен</span>";
@@ -215,14 +215,14 @@ class persController extends Controller
                                     "<span style='cursor:default;' class='badge badge-danger'>Не пройден</span>";
                         break;
                     case 3:
-                        if ($person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2)
+                        if (/*$person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2*/ true)
                             $status = "<span style='cursor:default;' class='badge badge-warning'>Продолжить</span>";
                         else 
                             $status = "<span class='badge badge-danger'>Тест не доступен</span>";
                         break;
                 }
-                if ($person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2)
-                    $successTest += [ $test->id => "true"];
+                if (/*$person->is_home == 'T' || $request->ip == '195.189.44.155' || $person_statements->first()->branch_id == 2*/ true)
+                    $successTest += [ $test->id => "onclick='checkedRow($(this),".$test->status.");testPersId=".$test->id."'"];
                 else 
                     $successTest += [ $test->id => "false"];
             }
@@ -239,7 +239,6 @@ class persController extends Controller
 
         }
 
-
         $pers = DB::table('persons')->where('id', session('pers_id'))->first();
 
         return view('testing.pers.cabinet', [
@@ -247,7 +246,8 @@ class persController extends Controller
             'person'        => $pers,
             'role'          => session('role_id'),
             'statusTest'    => $statusTest,
-            'successTest'   => $successTest
+            'successTest'   => $successTest,
+            'ip'            => $request->ip
         ]);
     }
 }

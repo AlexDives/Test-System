@@ -220,7 +220,7 @@ class testController extends Controller
 		$pers = DB::table('persons')->leftjoin('pers_tests', 'pers_tests.pers_id', 'persons.id')->where('pers_tests.id', $ptid)->select('persons.*')->first();
 		if ($test == null) echo '<script>location.replace("/pers/cabinet");</script>';
 
-		$count_answ = DB::table('pers_test_details')->where('pers_test_id', $ptid)->whereNotNull('answer_id')->count();
+		/*$count_answ = DB::table('pers_test_details')->where('pers_test_id', $ptid)->whereNotNull('answer_id')->count();
 
 		if (!$request->has('stop'))
 		{
@@ -235,7 +235,7 @@ class testController extends Controller
 					echo '<script>location.replace("https://abit.ltsu.org/profile");</script>'; exit;
 				}
 			}
-		} else DB::table('pers_tests')->where('id', $ptid)->update([ 'is_stop' => 'T' ]);
+		} else DB::table('pers_tests')->where('id', $ptid)->update([ 'is_stop' => 'T' ]);*/
 		
 		
 		//////////////////////////////////////////
@@ -346,7 +346,8 @@ class testController extends Controller
 				]
 			);
 		}
-		return redirect()->away("https://abit.ltsu.org/profile");
+		//return redirect()->away("https://abit.ltsu.org/profile");
+		return redirect()->away("/");
 	}
 
 	function speedTest(Request $request)

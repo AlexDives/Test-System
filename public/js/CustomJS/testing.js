@@ -137,7 +137,7 @@ function fastStop() {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input type="hidden" name="stop" value="T"><input type="hidden" name="ptid" value="' + pers_test_id + '">' + csrf;
-            if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+            if (BrowserDetect.version <= 53) $('#loadForm').html(form);
             else document.body.append(form);
             form.submit();
         } else {
@@ -214,8 +214,9 @@ function ajaxQuestList(test_id, pers_test_id) {
                 icon: 'error',
             }).then((result) => {
                 let form = document.createElement('form');
-                form.action = 'https://abit.ltsu.org/profile';
-                if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                //form.action = 'https://abit.ltsu.org/profile';
+                form.action = 'https://test.ltsu.org';
+                if (BrowserDetect.version <= 53) $('#loadForm').html(form);
                 else document.body.append(form);
                 $('#loadForm').html(form);
                 form.submit();
@@ -302,9 +303,10 @@ function selectedQuest(qid, obj) {
                     icon: 'error',
                 }).then((result) => {
                     let form = document.createElement('form');
-                    form.action = 'https://abit.ltsu.org/profile';
+                    //form.action = 'https://abit.ltsu.org/profile';
+                    form.action = 'https://test.ltsu.org';
                     form.method = 'GET';
-                    if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                    if (BrowserDetect.version <= 53) $('#loadForm').html(form);
                     else document.body.append(form);
                     form.submit();
                 });
@@ -339,7 +341,7 @@ function endTest(type) {
             form.action = '/test/result';
             form.method = 'POST';
             form.innerHTML = '<input name="ptid" value="' + pers_test_id + '">' + csrf;
-            if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+            if (BrowserDetect.version <= 53) $('#loadForm').html(form);
             else document.body.append(form);
             form.submit();
         }
@@ -424,9 +426,10 @@ function confirmResponse() {
                         icon: 'error',
                     }).then((result) => {
                         let form = document.createElement('form');
-                        form.action = 'https://abit.ltsu.org/profile';
+                        //form.action = 'https://abit.ltsu.org/profile';
+                        form.action = 'https://test.ltsu.org';
                         form.method = 'GET';
-                        if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                        if (BrowserDetect.version <= 53) $('#loadForm').html(form);
                         else document.body.append(form);
                         form.submit();
                     });
@@ -463,9 +466,10 @@ function time_left() {
                 icon: 'error',
             }).then((result) => {
                 let form = document.createElement('form');
-                form.action = 'https://abit.ltsu.org/profile';
+                //form.action = 'https://abit.ltsu.org/profile';
+                form.action = 'https://test.ltsu.org';
                 form.method = 'GET';
-                if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+                if (BrowserDetect.version <= 53) $('#loadForm').html(form);
                 else document.body.append(form);
                 form.submit();
             });
@@ -541,9 +545,10 @@ Swal.fire({
     } else {
         //window.location.href = "/pers/cabinet"
         let form = document.createElement('form');
-        form.action = 'https://abit.ltsu.org/profile';
+        //form.action = 'https://abit.ltsu.org/profile';
+        form.action = 'https://test.ltsu.org';
         form.method = 'GET';
-        if (BrowserDetect.version <= 49) $('#loadForm').html(form);
+        if (BrowserDetect.version <= 53) $('#loadForm').html(form);
         else document.body.append(form);
         form.submit();
     }
