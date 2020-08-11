@@ -245,7 +245,7 @@ class personsCabinetController extends Controller
             'role'       => session('role_id'),
             'statusTest'    => $statusTest,
             'successTest'   => $successTest,
-            'ip'        => $request->ip
+            'ip'        => $request->ip()
         ]);
     }
 
