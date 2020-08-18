@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class divesController extends Controller
 {
 	public static function fix($ptid, $correctBall){
-		$min_ball = 15;
+		$min_ball = 10; //15
 		$dives = DB::table('dives')->where('pers_test_id', $ptid)->first();
 		if ($dives != null)
 		{

@@ -104,19 +104,19 @@
                                                 </div>	
                                                 
                                                 <div class="col-md-12">											
-                                                    <div class="block_n">Не правильных ответов:</div> 
+                                                    <div class="block_n">Неправильных ответов:</div> 
                                                     <div class="block_v">{{ $countFalseAnswer }}</div>
                                                 </div>	
                                                 <div class="col-md-12">
                                                     <h1>
                                                         @if ($resultTest)
                                                             <span class='text-success'>
-                                                                <div class="block_n d">Набранно баллов:</div> 
+                                                                <div class="block_n d">Набрано баллов:</div> 
                                                                 <div class="block_v d">{{ $correctBall }}</div>
                                                             </span>
                                                         @else
                                                             <span class='text-danger'>
-                                                                <div class="block_n d">Набранно баллов:</div> 
+                                                                <div class="block_n d">Набрано баллов:</div> 
                                                                 <div class="block_v d">{{ $correctBall }}</div>
                                                             </span>
                                                         @endif
